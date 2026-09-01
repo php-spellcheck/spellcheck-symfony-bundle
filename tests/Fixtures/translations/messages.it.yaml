@@ -1,0 +1,8 @@
+# Deliberate typos: "messagi" and "indirizio".
+inbox:
+    count: 'Ciao %name%, hai %count% messagi'
+checkout:
+    shipping:
+        address: 'Inserisci il tuo indirizio di spedizione'
+cta: '<a href="/x">Clicca qui</a>'
+items: '{0} Nessuno|]0,1] Uno|]1,Inf] %count% elementi'
