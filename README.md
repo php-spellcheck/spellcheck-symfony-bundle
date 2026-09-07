@@ -1,13 +1,46 @@
-# PHPSpellcheckBundle
+# PHPSpellcheckBundle — spell check Symfony translations and PHP code
 
-Symfony integration for [`php-spellcheck/spellcheck-core`](https://github.com/php-spellcheck/spellcheck-core):
-spell checks **every translation catalogue with the dictionary of its own
-locale**, and the **PHP code** of the project (class names, methods,
-properties, parameters, constants, docblocks, comments).
+[![CI](https://github.com/php-spellcheck/spellcheck-symfony-bundle/actions/workflows/ci.yaml/badge.svg)](https://github.com/php-spellcheck/spellcheck-symfony-bundle/actions/workflows/ci.yaml)
+[![PHP](https://img.shields.io/badge/php-%3E%3D8.1-777bb4?logo=php&logoColor=white)](https://www.php.net/supported-versions.php)
+[![Symfony](https://img.shields.io/badge/symfony-5.4%20%7C%206.4%20%7C%207.x-000000?logo=symfony&logoColor=white)](https://symfony.com/releases)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-- Symfony **5.4 LTS**, 6.4, 7.x
-- PHP ≥ 8.1
-- Works without any system binary through the pure PHP `wordlist` backend
+A Symfony bundle that spell checks **every translation catalogue with the
+dictionary of its own locale**, and the **PHP code** of the project (class
+names, methods, properties, parameters, constants, docblocks, comments) — from
+the console, or as a failing build in CI.
+
+It is the Symfony integration of
+[`php-spellcheck/spellcheck-core`](https://github.com/php-spellcheck/spellcheck-core),
+the framework-agnostic engine.
+
+- Symfony **5.4 LTS**, 6.4, 7.x — PHP ≥ 8.1
+- Backends: **hunspell**, **aspell**, **ext-pspell**, or the pure PHP
+  `wordlist` backend, which needs no system binary
+- **ICU aware**: plural and select messages are expanded, only the textual
+  branches are checked
+- Placeholders, HTML, markdown code, URLs, e-mails and paths are stripped
+  **without losing the column** in the original message
+- **Baseline** for legacy projects: only new typos fail the build
+- Report formats for humans, **GitHub Actions annotations**, **GitLab Code
+  Quality**, JSON and JUnit
+- PSR-6 cached, deterministic output, lazy pipeline
+
+## Table of contents
+
+- [Install](#install)
+- [Minimal configuration](#minimal-configuration)
+- [Commands](#commands)
+- [Adopting on an existing project](#adopting-on-an-existing-project)
+- [Translation sources](#translation-sources)
+- [What is checked, and what is not](#what-is-checked-and-what-is-not)
+- [Suppressing](#suppressing)
+- [CI](#ci)
+- [Extending](#extending)
+- [Troubleshooting](#troubleshooting)
+- [FAQ](#faq)
+- [Related projects](#related-projects)
+- [Contributing](#contributing)
 
 ## Install
 
@@ -226,6 +259,48 @@ to `files`, or accept the logical location.
 **A word is not reported and I don't know why.** `spellcheck:debug:fragments
 --grep=<word>` shows the text after the pipeline and the extracted tokens.
 
+## FAQ
+
+**How do I spell check Symfony translation files?** Point
+`translations.paths` at the catalogue directories and run
+`bin/console spellcheck:translations`. Each catalogue is checked against the
+dictionary of its own locale, so `messages.it.yaml` is read as Italian and
+`messages.en.yaml` as English, in the same run.
+
+**Does it work without hunspell or aspell installed?** Yes. Set
+`backend: wordlist` and give it a word list: the pure PHP backend needs no
+system binary, which is the usual choice on a locked down CI image.
+
+**Can it check PHP identifiers and comments, not only strings?** Yes, that is
+what `spellcheck:code` does. `variable` and `string_literal` are off by default
+because local variables are often deliberate abbreviations and string literals
+carry SQL, regexes and service ids; enable them with `code.check`.
+
+**How do I adopt it on a legacy project with thousands of typos?** Record a
+baseline with `bin/console spellcheck:baseline` and commit it. From then on
+only regressions fail, and `--report-outdated` keeps the baseline from growing
+silently.
+
+**Does it fail my pull request?** Exit code `1` on new issues, `3` on warnings
+only, `2` on a configuration or environment error. With
+`--format=github` the issues show up as inline annotations on the diff.
+
+**Which locales are supported?** Any locale for which a dictionary is
+installed. `spellcheck:doctor` prints the mapping between your configured
+locales and the dictionaries actually found on the machine.
+
+## Related projects
+
+- [`php-spellcheck/spellcheck-core`](https://github.com/php-spellcheck/spellcheck-core)
+  — the engine: sources, processors, tokenizers, spellers, reporters, usable in
+  any PHP project or framework.
+
+## Contributing
+
+Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md)
+for the local setup and the rules that are not negotiable, and
+[SECURITY.md](SECURITY.md) to report a vulnerability privately.
+
 ## License
 
-MIT.
+[MIT](LICENSE) © Raffaele Carelle.

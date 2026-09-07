@@ -6,6 +6,12 @@
         "symfony", "symfony-bundle", "spell-checker", "spellcheck", "spelling", "php", "hunspell", "aspell", "translations", "i18n", "l10n", "code-quality", "static-analysis", "linter", "typo", "icu", "continuous-integration", "developer-tools"
     ],
     "license": "MIT",
+    "homepage": "https://github.com/php-spellcheck/spellcheck-symfony-bundle",
+    "support": {
+        "issues": "https://github.com/php-spellcheck/spellcheck-symfony-bundle/issues",
+        "source": "https://github.com/php-spellcheck/spellcheck-symfony-bundle",
+        "docs": "https://github.com/php-spellcheck/spellcheck-symfony-bundle#readme"
+    },
     "authors": [
         {
             "name": "Raffaele Carelle",

@@ -1,0 +1,12 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or usage help
+    url: https://github.com/php-spellcheck/spellcheck-symfony-bundle/discussions
+    about: Ask how to configure the bundle, or share a setup.
+  - name: Engine issue (framework-agnostic)
+    url: https://github.com/php-spellcheck/spellcheck-core/issues
+    about: >
+      Tokenizing, processors, offsets and backends live in spellcheck-core.
+  - name: Security vulnerability
+    url: https://github.com/php-spellcheck/spellcheck-symfony-bundle/security/advisories/new
+    about: Report privately, never in a public issue.

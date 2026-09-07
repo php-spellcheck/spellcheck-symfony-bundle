@@ -1,0 +1,49 @@
+name: Bug report
+description: A wrong result, a crash, or behaviour that does not match the README
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happens
+    attributes:
+      label: What happens
+      description: What you ran, and what you got.
+      placeholder: |
+        bin/console spellcheck:translations --locale=it
+        reports "Ciao" as a misspelling
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Smallest reproduction
+      description: >
+        The relevant part of config/packages/php_spellcheck.yaml, plus the
+        translation message or the PHP snippet involved.
+      render: yaml
+    validations:
+      required: true
+
+  - type: input
+    id: versions
+    attributes:
+      label: Bundle, Symfony and PHP versions
+      placeholder: bundle dev-main, Symfony 6.4.10, PHP 8.3.9
+    validations:
+      required: true
+
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Output of bin/console spellcheck:doctor
+      description: It reports the backends, the dictionaries and the locale mapping.
+      render: shell
+    validations:
+      required: true

@@ -1,0 +1,28 @@
+name: Feature request
+description: A new source, processor, backend, report format or option
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What you cannot do today, on a real project.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you propose
+      description: >
+        If it is a configuration change, show the YAML you would like to write.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+      description: >
+        A project dictionary, the baseline, an ignore pattern or a custom
+        extension point may already cover it.
