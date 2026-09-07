@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * Symfony 5.4 has no AbstractBundle (6.1+), so the classic triplet
  * Bundle + Extension + Configuration is used.
  */
-final class AcmeSpellcheckBundle extends Bundle
+final class PHPSpellcheckBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {
@@ -25,7 +25,7 @@ final class AcmeSpellcheckBundle extends Bundle
         // FrameworkBundle decides whether "translator" exists at extension-load
         // time, so this can run before optimization. It must run there: once the
         // OPTIMIZE group's ResolveReferencesToAliasesPass collapses alias chains,
-        // any alias pointing through "acme_spellcheck.source.translations" gets
+        // any alias pointing through "php_spellcheck.source.translations" gets
         // rewritten to point directly at the backing source service, and removing
         // that service afterwards (TYPE_BEFORE_REMOVING) would leave it dangling.
         $container->addCompilerPass(new TranslatorOptionalPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION);

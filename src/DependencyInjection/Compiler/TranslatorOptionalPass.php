@@ -17,13 +17,13 @@ use Symfony\Component\Translation\TranslatorBagInterface;
 final class TranslatorOptionalPass implements CompilerPassInterface
 {
     private const TRANSLATOR_DEPENDENT = [
-        'acme_spellcheck.source.translator_catalogue',
-        'acme_spellcheck.locale_resolver',
+        'php_spellcheck.source.translator_catalogue',
+        'php_spellcheck.locale_resolver',
     ];
 
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('acme_spellcheck.runner') && !$container->hasAlias('acme_spellcheck.runner')) {
+        if (!$container->hasDefinition('php_spellcheck.runner') && !$container->hasAlias('php_spellcheck.runner')) {
             return; // the bundle is disabled
         }
 
@@ -39,19 +39,19 @@ final class TranslatorOptionalPass implements CompilerPassInterface
             }
         }
 
-        foreach (['acme_spellcheck.command.translations', 'acme_spellcheck.source.translation_files'] as $id) {
+        foreach (['php_spellcheck.command.translations', 'php_spellcheck.source.translation_files'] as $id) {
             if ($container->hasDefinition($id)) {
                 $container->removeDefinition($id);
             }
         }
 
-        foreach (['acme_spellcheck.source.translations', 'acme_spellcheck.translator_bag'] as $alias) {
+        foreach (['php_spellcheck.source.translations', 'php_spellcheck.translator_bag'] as $alias) {
             if ($container->hasAlias($alias)) {
                 $container->removeAlias($alias);
             }
         }
 
-        $container->setParameter('acme_spellcheck.translations.available', false);
+        $container->setParameter('php_spellcheck.translations.available', false);
     }
 
     private function hasTranslator(ContainerBuilder $container): bool
@@ -68,6 +68,6 @@ final class TranslatorOptionalPass implements CompilerPassInterface
     {
         $id = $container->has(TranslatorBagInterface::class) ? TranslatorBagInterface::class : 'translator';
 
-        $container->setAlias('acme_spellcheck.translator_bag', $id);
+        $container->setAlias('php_spellcheck.translator_bag', $id);
     }
 }

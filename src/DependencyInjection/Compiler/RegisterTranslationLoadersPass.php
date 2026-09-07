@@ -19,7 +19,7 @@ final class RegisterTranslationLoadersPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('acme_spellcheck.source.translation_files')) {
+        if (!$container->hasDefinition('php_spellcheck.source.translation_files')) {
             return;
         }
 
@@ -39,7 +39,7 @@ final class RegisterTranslationLoadersPass implements CompilerPassInterface
             }
         }
 
-        $container->getDefinition('acme_spellcheck.source.translation_files')
+        $container->getDefinition('php_spellcheck.source.translation_files')
             ->replaceArgument(0, ServiceLocatorTagPass::register($container, $references));
     }
 }

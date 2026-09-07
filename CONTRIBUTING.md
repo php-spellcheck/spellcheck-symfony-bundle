@@ -64,7 +64,7 @@ make test-all
    is removed, so words never get glued together.
 4. Write a test asserting **both** the resulting text and the translated offset.
 5. Register it in `packages/spellcheck-bundle/config/services.php` with the
-   `acme_spellcheck.processor` tag.
+   `php_spellcheck.processor` tag.
 
 Careful with regex delimiters: PHP looks for the closing delimiter before it
 knows about the `x` modifier, so a `/` or a `#` inside an extended-mode comment

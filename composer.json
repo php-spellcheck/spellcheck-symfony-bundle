@@ -1,6 +1,6 @@
 {
     "name": "php-spellcheck/spellcheck-symfony-bundle",
-    "description": "Spell check Symfony translations and PHP code in CI. Hunspell/Aspell backends, ICU aware, baseline for legacy projects.",
+    "description": "git branch -M main",
     "type": "symfony-bundle",
     "keywords": [
         "symfony", "symfony-bundle", "spell-checker", "spellcheck", "spelling", "php", "hunspell", "aspell", "translations", "i18n", "l10n", "code-quality", "static-analysis", "linter", "typo", "icu", "continuous-integration", "developer-tools"

@@ -88,7 +88,7 @@ final class LocaleResolver
         if ([] === $locales) {
             $this->diagnostics->add(
                 DiagnosticCode::MISSING_LOCALES,
-                'No locale could be determined. Set framework.enabled_locales or acme_spellcheck.translations.locales.',
+                'No locale could be determined. Set framework.enabled_locales or php_spellcheck.translations.locales.',
             );
 
             return [];
@@ -98,7 +98,7 @@ final class LocaleResolver
             DiagnosticCode::MISSING_LOCALES,
             \sprintf(
                 'Locales were inferred from the translator (%s). Configure framework.enabled_locales or '
-                .'acme_spellcheck.translations.locales for reproducible runs.',
+                .'php_spellcheck.translations.locales for reproducible runs.',
                 implode(', ', $locales),
             ),
         );

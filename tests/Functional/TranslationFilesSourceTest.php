@@ -62,7 +62,7 @@ final class TranslationFilesSourceTest extends TestCase
         $kernel->boot();
 
         /** @var TranslationFilesSource $source */
-        $source = $kernel->getContainer()->get('test.acme_spellcheck.source.translations');
+        $source = $kernel->getContainer()->get('test.php_spellcheck.source.translations');
 
         return array_values(iterator_to_array($source->fragments(), false));
     }

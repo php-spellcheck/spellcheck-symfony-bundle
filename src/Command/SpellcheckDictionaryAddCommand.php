@@ -53,7 +53,7 @@ final class SpellcheckDictionaryAddCommand extends Command
 
         if (null === $path) {
             $io->error(
-                'No dictionary file configured. Set acme_spellcheck.dictionaries or pass --file.',
+                'No dictionary file configured. Set php_spellcheck.dictionaries or pass --file.',
             );
 
             return ExitCodeCalculator::ENVIRONMENT_ERROR;

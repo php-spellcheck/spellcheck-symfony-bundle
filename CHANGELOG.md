@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- `AcmeSpellcheckBundle` targeting Symfony 5.4 LTS: classic
+- `PHPSpellcheckBundle` targeting Symfony 5.4 LTS: classic
   Bundle + Extension + Configuration, since `AbstractBundle` is 6.1+.
 - Full configuration tree with strict validation: unknown backends, invalid
   `ignore_patterns` and missing dictionary files fail at compile time.

@@ -1,4 +1,4 @@
-# AcmeSpellcheckBundle
+# PHPSpellcheckBundle
 
 Symfony integration for [`php-spellcheck/spellcheck-core`](https://github.com/php-spellcheck/spellcheck-core):
 spell checks **every translation catalogue with the dictionary of its own
@@ -21,7 +21,7 @@ Without Flex, register the bundle in dev and test only:
 // config/bundles.php
 return [
     // ...
-    PHPSpellcheck\SpellcheckBundle\AcmeSpellcheckBundle::class => ['dev' => true, 'test' => true],
+    PHPSpellcheck\SpellcheckBundle\PHPSpellcheckBundle::class => ['dev' => true, 'test' => true],
 ];
 ```
 
@@ -40,13 +40,13 @@ bin/console spellcheck:doctor
 ## Minimal configuration
 
 ```yaml
-# config/packages/acme_spellcheck.yaml
-acme_spellcheck:
+# config/packages/php_spellcheck.yaml
+php_spellcheck:
     dictionaries:
         - '%kernel.project_dir%/.spellcheck/project.txt'
 
     cache:
-        pool: cache.acme_spellcheck
+        pool: cache.php_spellcheck
 
     translations:
         paths: ['%kernel.project_dir%/translations']
@@ -60,7 +60,7 @@ acme_spellcheck:
 framework:
     cache:
         pools:
-            cache.acme_spellcheck:
+            cache.php_spellcheck:
                 adapter: cache.adapter.filesystem
 ```
 
@@ -175,12 +175,12 @@ enabled:
 
 | Tag | Interface |
 |---|---|
-| `acme_spellcheck.source` | `SourceInterface` |
-| `acme_spellcheck.processor` | `TextProcessorInterface` |
-| `acme_spellcheck.tokenizer` | `TokenizerInterface` |
-| `acme_spellcheck.speller` | `SpellerInterface` |
-| `acme_spellcheck.reporter` | `ReporterInterface` |
-| `acme_spellcheck.filter` | `MisspellingFilterInterface` |
+| `php_spellcheck.source` | `SourceInterface` |
+| `php_spellcheck.processor` | `TextProcessorInterface` |
+| `php_spellcheck.tokenizer` | `TokenizerInterface` |
+| `php_spellcheck.speller` | `SpellerInterface` |
+| `php_spellcheck.reporter` | `ReporterInterface` |
+| `php_spellcheck.filter` | `MisspellingFilterInterface` |
 
 A custom reporter's `getName()` becomes a valid `--format` value.
 

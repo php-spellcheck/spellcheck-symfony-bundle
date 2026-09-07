@@ -17,16 +17,16 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class AcmeSpellcheckExtension extends Extension
+final class PHPSpellcheckExtension extends Extension
 {
     /** @var array<class-string, string> */
     private const AUTOCONFIGURATION = [
-        SourceInterface::class => 'acme_spellcheck.source',
-        TextProcessorInterface::class => 'acme_spellcheck.processor',
-        TokenizerInterface::class => 'acme_spellcheck.tokenizer',
-        SpellerInterface::class => 'acme_spellcheck.speller',
-        ReporterInterface::class => 'acme_spellcheck.reporter',
-        MisspellingFilterInterface::class => 'acme_spellcheck.filter',
+        SourceInterface::class => 'php_spellcheck.source',
+        TextProcessorInterface::class => 'php_spellcheck.processor',
+        TokenizerInterface::class => 'php_spellcheck.tokenizer',
+        SpellerInterface::class => 'php_spellcheck.speller',
+        ReporterInterface::class => 'php_spellcheck.reporter',
+        MisspellingFilterInterface::class => 'php_spellcheck.filter',
     ];
 
     /**
@@ -66,7 +66,7 @@ final class AcmeSpellcheckExtension extends Extension
      *
      * @param array<string, mixed> $config
      */
-    private function registerParameters(ContainerBuilder $container, array $config, string $prefix = 'acme_spellcheck'): void
+    private function registerParameters(ContainerBuilder $container, array $config, string $prefix = 'php_spellcheck'): void
     {
         foreach ($config as $key => $value) {
             $name = $prefix.'.'.$key;
@@ -93,7 +93,7 @@ final class AcmeSpellcheckExtension extends Extension
 
         $paths = array_merge(BuiltinDictionaries::paths($builtin), $custom);
 
-        $container->setParameter('acme_spellcheck.dictionary_paths', $paths);
+        $container->setParameter('php_spellcheck.dictionary_paths', $paths);
     }
 
     /**
@@ -106,23 +106,23 @@ final class AcmeSpellcheckExtension extends Extension
 
         if ('auto' === $backend) {
             // ChainSpeller resolves the actual backend at runtime, per language.
-            $container->setAlias('acme_spellcheck.speller.selected', 'acme_spellcheck.speller.chain');
+            $container->setAlias('php_spellcheck.speller.selected', 'php_spellcheck.speller.chain');
 
             return;
         }
 
-        $id = 'acme_spellcheck.speller.'.$backend;
-        $container->setAlias('acme_spellcheck.speller.selected', $id);
+        $id = 'php_spellcheck.speller.'.$backend;
+        $container->setAlias('php_spellcheck.speller.selected', $id);
 
         // The chain is only useful in auto mode.
-        $container->removeDefinition('acme_spellcheck.speller.chain');
+        $container->removeDefinition('php_spellcheck.speller.chain');
 
         foreach (Configuration::BACKENDS as $candidate) {
             if ('auto' === $candidate || $candidate === $backend) {
                 continue;
             }
 
-            $candidateId = 'acme_spellcheck.speller.'.$candidate;
+            $candidateId = 'php_spellcheck.speller.'.$candidate;
 
             if ($container->hasDefinition($candidateId)) {
                 $container->removeDefinition($candidateId);
@@ -139,13 +139,13 @@ final class AcmeSpellcheckExtension extends Extension
         $cache = $config['cache'];
 
         if (!$cache['enabled']) {
-            $container->removeDefinition('acme_spellcheck.speller.caching');
-            $container->setAlias('acme_spellcheck.speller', 'acme_spellcheck.speller.selected');
+            $container->removeDefinition('php_spellcheck.speller.caching');
+            $container->setAlias('php_spellcheck.speller', 'php_spellcheck.speller.selected');
 
             return;
         }
 
-        $container->getDefinition('acme_spellcheck.speller.caching')
+        $container->getDefinition('php_spellcheck.speller.caching')
             ->replaceArgument(1, new Reference($cache['pool']));
     }
 
@@ -160,32 +160,32 @@ final class AcmeSpellcheckExtension extends Extension
         $code = $config['code'];
 
         if (!$translations['enabled'] || !class_exists(\Symfony\Component\Translation\Translator::class)) {
-            $container->removeDefinition('acme_spellcheck.source.translator_catalogue');
-            $container->removeDefinition('acme_spellcheck.source.translation_files');
-            $container->removeDefinition('acme_spellcheck.command.translations');
-            $container->setParameter('acme_spellcheck.translations.available', false);
+            $container->removeDefinition('php_spellcheck.source.translator_catalogue');
+            $container->removeDefinition('php_spellcheck.source.translation_files');
+            $container->removeDefinition('php_spellcheck.command.translations');
+            $container->setParameter('php_spellcheck.translations.available', false);
 
             return;
         }
 
-        $container->setParameter('acme_spellcheck.translations.available', true);
+        $container->setParameter('php_spellcheck.translations.available', true);
 
         // Only one of the two translation sources is kept.
         $unused = 'files' === $translations['source']
-            ? 'acme_spellcheck.source.translator_catalogue'
-            : 'acme_spellcheck.source.translation_files';
+            ? 'php_spellcheck.source.translator_catalogue'
+            : 'php_spellcheck.source.translation_files';
 
         $container->removeDefinition($unused);
 
         $used = 'files' === $translations['source']
-            ? 'acme_spellcheck.source.translation_files'
-            : 'acme_spellcheck.source.translator_catalogue';
+            ? 'php_spellcheck.source.translation_files'
+            : 'php_spellcheck.source.translator_catalogue';
 
-        $container->setAlias('acme_spellcheck.source.translations', $used);
+        $container->setAlias('php_spellcheck.source.translations', $used);
 
         if (!$code['enabled']) {
-            $container->removeDefinition('acme_spellcheck.source.php');
-            $container->removeDefinition('acme_spellcheck.command.code');
+            $container->removeDefinition('php_spellcheck.source.php');
+            $container->removeDefinition('php_spellcheck.command.code');
         }
     }
 

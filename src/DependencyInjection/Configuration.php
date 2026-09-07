@@ -18,7 +18,7 @@ final class Configuration implements ConfigurationInterface
 
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('acme_spellcheck');
+        $treeBuilder = new TreeBuilder('php_spellcheck');
 
         /** @var ArrayNodeDefinition $root */
         $root = $treeBuilder->getRootNode();
@@ -82,7 +82,7 @@ final class Configuration implements ConfigurationInterface
 
                             return false;
                         })
-                        ->thenInvalid('One of the acme_spellcheck.dictionaries files does not exist: %s')
+                        ->thenInvalid('One of the php_spellcheck.dictionaries files does not exist: %s')
                     ->end()
                 ->end()
                 ->arrayNode('builtin_dictionaries')
@@ -110,7 +110,7 @@ final class Configuration implements ConfigurationInterface
 
                             return false;
                         })
-                        ->thenInvalid('One of the acme_spellcheck.ignore_patterns is not a valid regular expression: %s')
+                        ->thenInvalid('One of the php_spellcheck.ignore_patterns is not a valid regular expression: %s')
                     ->end()
                     ->example(['/^[A-Z]{2,5}$/', '/^v\d+$/'])
                 ->end()

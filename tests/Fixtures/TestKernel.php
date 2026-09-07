@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PHPSpellcheck\SpellcheckBundle\Tests\Fixtures;
 
-use PHPSpellcheck\SpellcheckBundle\AcmeSpellcheckBundle;
+use PHPSpellcheck\SpellcheckBundle\PHPSpellcheckBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -29,7 +29,7 @@ final class TestKernel extends Kernel
     public function registerBundles(): iterable
     {
         yield new FrameworkBundle();
-        yield new AcmeSpellcheckBundle();
+        yield new PHPSpellcheckBundle();
     }
 
     public function getProjectDir(): string
@@ -58,7 +58,7 @@ final class TestKernel extends Kernel
             'php_errors' => ['log' => true],
             'cache' => [
                 'pools' => [
-                    'cache.acme_spellcheck' => ['adapter' => 'cache.adapter.array'],
+                    'cache.php_spellcheck' => ['adapter' => 'cache.adapter.array'],
                 ],
             ],
         ];
@@ -76,25 +76,25 @@ final class TestKernel extends Kernel
 
         $container->extension('framework', $framework);
 
-        $container->extension('acme_spellcheck', array_replace_recursive([
+        $container->extension('php_spellcheck', array_replace_recursive([
             'backend' => 'wordlist',
             'builtin_dictionaries' => [],
             'dictionaries' => [__DIR__.'/dictionaries/test.txt'],
             'min_word_length' => 3,
-            'cache' => ['pool' => 'cache.acme_spellcheck'],
+            'cache' => ['pool' => 'cache.php_spellcheck'],
             'baseline' => ['path' => __DIR__.'/var/baseline.json'],
             'translations' => ['paths' => [__DIR__.'/translations']],
             'code' => ['paths' => [__DIR__.'/php'], 'language' => 'en'],
         ], $this->spellcheckConfig));
 
         $container->services()
-            ->alias('test.acme_spellcheck.runner', 'acme_spellcheck.runner')->public()
+            ->alias('test.php_spellcheck.runner', 'php_spellcheck.runner')->public()
         ;
 
         if ($this->withTranslator) {
             $container->services()
-                ->alias('test.acme_spellcheck.source.translations', 'acme_spellcheck.source.translations')->public()
-                ->alias('test.acme_spellcheck.locale_resolver', 'acme_spellcheck.locale_resolver')->public()
+                ->alias('test.php_spellcheck.source.translations', 'php_spellcheck.source.translations')->public()
+                ->alias('test.php_spellcheck.locale_resolver', 'php_spellcheck.locale_resolver')->public()
             ;
         }
     }

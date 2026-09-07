@@ -80,349 +80,349 @@ return static function (ContainerConfigurator $container): void {
 
     // ---------------------------------------------------------------- shared
 
-    $services->set('acme_spellcheck.diagnostics', DiagnosticCollector::class);
-    $services->set('acme_spellcheck.statistics', RunStatisticsCollector::class);
+    $services->set('php_spellcheck.diagnostics', DiagnosticCollector::class);
+    $services->set('php_spellcheck.statistics', RunStatisticsCollector::class);
 
     // --------------------------------------------------------- dictionaries
 
-    $services->set('acme_spellcheck.dictionary_loader', DictionaryLoader::class)
-        ->args([param('acme_spellcheck.case_sensitive')]);
+    $services->set('php_spellcheck.dictionary_loader', DictionaryLoader::class)
+        ->args([param('php_spellcheck.case_sensitive')]);
 
-    $services->set('acme_spellcheck.dictionary', AggregateDictionary::class)
-        ->factory([service('acme_spellcheck.dictionary_loader'), 'loadAll'])
-        ->args([param('acme_spellcheck.dictionary_paths')]);
+    $services->set('php_spellcheck.dictionary', AggregateDictionary::class)
+        ->factory([service('php_spellcheck.dictionary_loader'), 'loadAll'])
+        ->args([param('php_spellcheck.dictionary_paths')]);
 
-    $services->set('acme_spellcheck.locale_dictionary_map', LocaleDictionaryMap::class)
-        ->args([param('acme_spellcheck.locale_map'), []]);
+    $services->set('php_spellcheck.locale_dictionary_map', LocaleDictionaryMap::class)
+        ->args([param('php_spellcheck.locale_map'), []]);
 
     // ------------------------------------------------------------- tokenizer
 
-    $services->set('acme_spellcheck.tokenizer.identifier', IdentifierSplitter::class)
-        ->args([param('acme_spellcheck.min_word_length'), param('acme_spellcheck.ignore_patterns')])
-        ->tag('acme_spellcheck.tokenizer');
+    $services->set('php_spellcheck.tokenizer.identifier', IdentifierSplitter::class)
+        ->args([param('php_spellcheck.min_word_length'), param('php_spellcheck.ignore_patterns')])
+        ->tag('php_spellcheck.tokenizer');
 
-    $services->set('acme_spellcheck.tokenizer.prose', ProseTokenizer::class)
-        ->args([param('acme_spellcheck.min_word_length')])
-        ->tag('acme_spellcheck.tokenizer');
+    $services->set('php_spellcheck.tokenizer.prose', ProseTokenizer::class)
+        ->args([param('php_spellcheck.min_word_length')])
+        ->tag('php_spellcheck.tokenizer');
 
-    $services->set('acme_spellcheck.tokenizer_registry', TokenizerRegistry::class)
-        ->args([tagged_iterator('acme_spellcheck.tokenizer')]);
+    $services->set('php_spellcheck.tokenizer_registry', TokenizerRegistry::class)
+        ->args([tagged_iterator('php_spellcheck.tokenizer')]);
 
     // ------------------------------------------------------------ processors
 
-    $services->set('acme_spellcheck.icu_parser', IcuMessageParser::class);
+    $services->set('php_spellcheck.icu_parser', IcuMessageParser::class);
 
-    $services->set('acme_spellcheck.processor.normalize_apostrophe', NormalizeApostropheProcessor::class)
-        ->tag('acme_spellcheck.processor');
+    $services->set('php_spellcheck.processor.normalize_apostrophe', NormalizeApostropheProcessor::class)
+        ->tag('php_spellcheck.processor');
 
-    $services->set('acme_spellcheck.processor.legacy_plural', LegacyPluralProcessor::class)
-        ->tag('acme_spellcheck.processor');
+    $services->set('php_spellcheck.processor.legacy_plural', LegacyPluralProcessor::class)
+        ->tag('php_spellcheck.processor');
 
-    $services->set('acme_spellcheck.processor.icu', IcuMessageProcessor::class)
+    $services->set('php_spellcheck.processor.icu', IcuMessageProcessor::class)
         ->args([
-            service('acme_spellcheck.icu_parser'),
-            param('acme_spellcheck.translations.icu_mode'),
-            service('acme_spellcheck.diagnostics'),
+            service('php_spellcheck.icu_parser'),
+            param('php_spellcheck.translations.icu_mode'),
+            service('php_spellcheck.diagnostics'),
         ])
-        ->tag('acme_spellcheck.processor');
+        ->tag('php_spellcheck.processor');
 
-    $services->set('acme_spellcheck.processor.placeholder', PlaceholderProcessor::class)
-        ->tag('acme_spellcheck.processor');
+    $services->set('php_spellcheck.processor.placeholder', PlaceholderProcessor::class)
+        ->tag('php_spellcheck.processor');
 
-    $services->set('acme_spellcheck.processor.sprintf', SprintfProcessor::class)
-        ->tag('acme_spellcheck.processor');
+    $services->set('php_spellcheck.processor.sprintf', SprintfProcessor::class)
+        ->tag('php_spellcheck.processor');
 
-    $services->set('acme_spellcheck.processor.html', HtmlProcessor::class)
-        ->tag('acme_spellcheck.processor');
+    $services->set('php_spellcheck.processor.html', HtmlProcessor::class)
+        ->tag('php_spellcheck.processor');
 
-    $services->set('acme_spellcheck.processor.markdown', MarkdownProcessor::class)
-        ->tag('acme_spellcheck.processor');
+    $services->set('php_spellcheck.processor.markdown', MarkdownProcessor::class)
+        ->tag('php_spellcheck.processor');
 
-    $services->set('acme_spellcheck.processor.url', UrlProcessor::class)
-        ->tag('acme_spellcheck.processor');
+    $services->set('php_spellcheck.processor.url', UrlProcessor::class)
+        ->tag('php_spellcheck.processor');
 
-    $services->set('acme_spellcheck.processor.docblock', DocBlockProcessor::class)
-        ->args([param('acme_spellcheck.code.strict_docblock_tags')])
-        ->tag('acme_spellcheck.processor');
+    $services->set('php_spellcheck.processor.docblock', DocBlockProcessor::class)
+        ->args([param('php_spellcheck.code.strict_docblock_tags')])
+        ->tag('php_spellcheck.processor');
 
-    $services->set('acme_spellcheck.processor_chain', ProcessorChain::class)
-        ->args([tagged_iterator('acme_spellcheck.processor')]);
+    $services->set('php_spellcheck.processor_chain', ProcessorChain::class)
+        ->args([tagged_iterator('php_spellcheck.processor')]);
 
     // --------------------------------------------------------------- backends
 
-    $services->set('acme_spellcheck.speller.hunspell', HunspellSpeller::class)
+    $services->set('php_spellcheck.speller.hunspell', HunspellSpeller::class)
         ->args([
-            param('acme_spellcheck.backend_options.hunspell_binary'),
-            param('acme_spellcheck.backend_options.extra_dictionaries'),
-            param('acme_spellcheck.backend_options.read_timeout'),
-            param('acme_spellcheck.backend_options.terse_mode'),
+            param('php_spellcheck.backend_options.hunspell_binary'),
+            param('php_spellcheck.backend_options.extra_dictionaries'),
+            param('php_spellcheck.backend_options.read_timeout'),
+            param('php_spellcheck.backend_options.terse_mode'),
             null,
         ]);
 
-    $services->set('acme_spellcheck.speller.aspell', AspellSpeller::class)
+    $services->set('php_spellcheck.speller.aspell', AspellSpeller::class)
         ->args([
-            param('acme_spellcheck.backend_options.aspell_binary'),
-            param('acme_spellcheck.backend_options.read_timeout'),
-            param('acme_spellcheck.backend_options.terse_mode'),
+            param('php_spellcheck.backend_options.aspell_binary'),
+            param('php_spellcheck.backend_options.read_timeout'),
+            param('php_spellcheck.backend_options.terse_mode'),
             null,
         ]);
 
-    $services->set('acme_spellcheck.speller.pspell', PspellSpeller::class)
-        ->args([0, param('acme_spellcheck.max_suggestions')]);
+    $services->set('php_spellcheck.speller.pspell', PspellSpeller::class)
+        ->args([0, param('php_spellcheck.max_suggestions')]);
 
-    $services->set('acme_spellcheck.speller.wordlist', WordListSpeller::class)
-        ->args([service('acme_spellcheck.dictionary'), param('acme_spellcheck.max_suggestions')]);
+    $services->set('php_spellcheck.speller.wordlist', WordListSpeller::class)
+        ->args([service('php_spellcheck.dictionary'), param('php_spellcheck.max_suggestions')]);
 
-    $services->set('acme_spellcheck.speller.null', NullSpeller::class);
+    $services->set('php_spellcheck.speller.null', NullSpeller::class);
 
     // Only used when backend = auto; the extension removes it otherwise.
-    $services->set('acme_spellcheck.speller.chain', ChainSpeller::class)
+    $services->set('php_spellcheck.speller.chain', ChainSpeller::class)
         ->args([
             [
-                service('acme_spellcheck.speller.hunspell'),
-                service('acme_spellcheck.speller.aspell'),
-                service('acme_spellcheck.speller.pspell'),
-                service('acme_spellcheck.speller.wordlist'),
+                service('php_spellcheck.speller.hunspell'),
+                service('php_spellcheck.speller.aspell'),
+                service('php_spellcheck.speller.pspell'),
+                service('php_spellcheck.speller.wordlist'),
             ],
-            service('acme_spellcheck.diagnostics'),
+            service('php_spellcheck.diagnostics'),
         ]);
 
     // The extension aliases this to the selected backend.
-    $services->alias('acme_spellcheck.speller.selected', 'acme_spellcheck.speller.chain');
+    $services->alias('php_spellcheck.speller.selected', 'php_spellcheck.speller.chain');
 
-    $services->set('acme_spellcheck.speller.caching', \PHPSpellcheck\Core\Speller\CachingSpeller::class)
+    $services->set('php_spellcheck.speller.caching', \PHPSpellcheck\Core\Speller\CachingSpeller::class)
         ->factory([CachingSpellerFactory::class, 'create'])
         ->args([
-            service('acme_spellcheck.speller.selected'),
+            service('php_spellcheck.speller.selected'),
             service('cache.app'), // replaced by the extension with the configured pool
-            service('acme_spellcheck.dictionary'),
-            param('acme_spellcheck.case_sensitive'),
-            param('acme_spellcheck.check_case'),
-            param('acme_spellcheck.max_suggestions'),
-            param('acme_spellcheck.cache.ttl'),
-            service('acme_spellcheck.statistics'),
+            service('php_spellcheck.dictionary'),
+            param('php_spellcheck.case_sensitive'),
+            param('php_spellcheck.check_case'),
+            param('php_spellcheck.max_suggestions'),
+            param('php_spellcheck.cache.ttl'),
+            service('php_spellcheck.statistics'),
         ]);
 
-    $services->alias('acme_spellcheck.speller', 'acme_spellcheck.speller.caching');
+    $services->alias('php_spellcheck.speller', 'php_spellcheck.speller.caching');
 
     // ---------------------------------------------------------------- filters
 
-    $services->set('acme_spellcheck.filter.dictionary', DictionaryFilter::class)
-        ->args([service('acme_spellcheck.dictionary')])
-        ->tag('acme_spellcheck.filter');
+    $services->set('php_spellcheck.filter.dictionary', DictionaryFilter::class)
+        ->args([service('php_spellcheck.dictionary')])
+        ->tag('php_spellcheck.filter');
 
-    $services->set('acme_spellcheck.filter.pattern', PatternFilter::class)
-        ->args([param('acme_spellcheck.ignore_patterns')])
-        ->tag('acme_spellcheck.filter');
+    $services->set('php_spellcheck.filter.pattern', PatternFilter::class)
+        ->args([param('php_spellcheck.ignore_patterns')])
+        ->tag('php_spellcheck.filter');
 
-    $services->set('acme_spellcheck.filter.deduplication', DeduplicationFilter::class)
-        ->tag('acme_spellcheck.filter');
+    $services->set('php_spellcheck.filter.deduplication', DeduplicationFilter::class)
+        ->tag('php_spellcheck.filter');
 
-    $services->set('acme_spellcheck.filter.baseline', BaselineFilter::class)
-        ->args([service('acme_spellcheck.statistics')])
-        ->tag('acme_spellcheck.filter');
+    $services->set('php_spellcheck.filter.baseline', BaselineFilter::class)
+        ->args([service('php_spellcheck.statistics')])
+        ->tag('php_spellcheck.filter');
 
-    $services->set('acme_spellcheck.filter_chain', FilterChain::class)
-        ->args([tagged_iterator('acme_spellcheck.filter')]);
+    $services->set('php_spellcheck.filter_chain', FilterChain::class)
+        ->args([tagged_iterator('php_spellcheck.filter')]);
 
     // --------------------------------------------------------------- baseline
 
-    $services->set('acme_spellcheck.baseline_storage', BaselineStorage::class);
+    $services->set('php_spellcheck.baseline_storage', BaselineStorage::class);
 
     // --------------------------------------------------------------- locators
 
-    $services->set('acme_spellcheck.locator.yaml', YamlKeyLocator::class)
-        ->tag('acme_spellcheck.key_locator');
-    $services->set('acme_spellcheck.locator.xliff', XliffKeyLocator::class)
-        ->tag('acme_spellcheck.key_locator');
-    $services->set('acme_spellcheck.locator.php_array', PhpArrayKeyLocator::class)
-        ->tag('acme_spellcheck.key_locator');
+    $services->set('php_spellcheck.locator.yaml', YamlKeyLocator::class)
+        ->tag('php_spellcheck.key_locator');
+    $services->set('php_spellcheck.locator.xliff', XliffKeyLocator::class)
+        ->tag('php_spellcheck.key_locator');
+    $services->set('php_spellcheck.locator.php_array', PhpArrayKeyLocator::class)
+        ->tag('php_spellcheck.key_locator');
 
-    $services->set('acme_spellcheck.translation_file_locator', TranslationFileLocator::class)
+    $services->set('php_spellcheck.translation_file_locator', TranslationFileLocator::class)
         ->args([
-            param('acme_spellcheck.translations.paths'),
-            tagged_iterator('acme_spellcheck.key_locator'),
+            param('php_spellcheck.translations.paths'),
+            tagged_iterator('php_spellcheck.key_locator'),
             param('kernel.project_dir'),
         ]);
 
     // ---------------------------------------------------------------- runner
 
-    $services->set('acme_spellcheck.suggestion_formatter', SuggestionFormatter::class);
+    $services->set('php_spellcheck.suggestion_formatter', SuggestionFormatter::class);
 
-    $services->set('acme_spellcheck.misspelling_factory', MisspellingFactory::class)
+    $services->set('php_spellcheck.misspelling_factory', MisspellingFactory::class)
         ->args([
-            service('acme_spellcheck.suggestion_formatter'),
-            param('acme_spellcheck.max_suggestions'),
+            service('php_spellcheck.suggestion_formatter'),
+            param('php_spellcheck.max_suggestions'),
         ]);
 
-    $services->set('acme_spellcheck.runner', SpellcheckRunner::class)
+    $services->set('php_spellcheck.runner', SpellcheckRunner::class)
         ->args([
-            service('acme_spellcheck.processor_chain'),
-            service('acme_spellcheck.tokenizer_registry'),
-            service('acme_spellcheck.speller'),
-            service('acme_spellcheck.filter_chain'),
-            service('acme_spellcheck.misspelling_factory'),
-            service('acme_spellcheck.diagnostics'),
-            service('acme_spellcheck.statistics'),
-            service('acme_spellcheck.filter.baseline'),
+            service('php_spellcheck.processor_chain'),
+            service('php_spellcheck.tokenizer_registry'),
+            service('php_spellcheck.speller'),
+            service('php_spellcheck.filter_chain'),
+            service('php_spellcheck.misspelling_factory'),
+            service('php_spellcheck.diagnostics'),
+            service('php_spellcheck.statistics'),
+            service('php_spellcheck.filter.baseline'),
             service('logger')->nullOnInvalid(),
         ]);
 
-    $services->set('acme_spellcheck.run_configuration_factory', RunConfigurationFactory::class)
+    $services->set('php_spellcheck.run_configuration_factory', RunConfigurationFactory::class)
         ->args([
-            service('acme_spellcheck.locale_dictionary_map'),
-            service('acme_spellcheck.speller'),
-            service('acme_spellcheck.diagnostics'),
-            param('acme_spellcheck.max_suggestions'),
-            param('acme_spellcheck.baseline.enabled'),
-            param('acme_spellcheck.cache.enabled'),
-            param('acme_spellcheck.translations.excluded_languages'),
-            param('acme_spellcheck.profiles'),
+            service('php_spellcheck.locale_dictionary_map'),
+            service('php_spellcheck.speller'),
+            service('php_spellcheck.diagnostics'),
+            param('php_spellcheck.max_suggestions'),
+            param('php_spellcheck.baseline.enabled'),
+            param('php_spellcheck.cache.enabled'),
+            param('php_spellcheck.translations.excluded_languages'),
+            param('php_spellcheck.profiles'),
         ]);
 
     // --------------------------------------------------------------- sources
 
-    $services->set('acme_spellcheck.domain_filter', DomainFilter::class)
+    $services->set('php_spellcheck.domain_filter', DomainFilter::class)
         ->args([
-            param('acme_spellcheck.translations.domains'),
-            param('acme_spellcheck.translations.exclude_domains'),
+            param('php_spellcheck.translations.domains'),
+            param('php_spellcheck.translations.exclude_domains'),
         ]);
 
     // Placeholder reference: TranslatorOptionalPass swaps it for the real
     // translator service id, which differs depending on whether the autowiring
     // alias exists.
-    $services->alias('acme_spellcheck.translator_bag', 'translator')->private();
+    $services->alias('php_spellcheck.translator_bag', 'translator')->private();
 
-    $services->set('acme_spellcheck.locale_resolver', \PHPSpellcheck\SpellcheckBundle\Locale\LocaleResolver::class)
+    $services->set('php_spellcheck.locale_resolver', \PHPSpellcheck\SpellcheckBundle\Locale\LocaleResolver::class)
         ->args([
-            service('acme_spellcheck.translator_bag'),
-            param('acme_spellcheck.translations.locales'),
+            service('php_spellcheck.translator_bag'),
+            param('php_spellcheck.translations.locales'),
             param('kernel.enabled_locales'),
-            service('acme_spellcheck.diagnostics'),
+            service('php_spellcheck.diagnostics'),
             param('kernel.default_locale'),
         ]);
 
-    $services->set('acme_spellcheck.source.translator_catalogue', TranslatorCatalogueSource::class)
+    $services->set('php_spellcheck.source.translator_catalogue', TranslatorCatalogueSource::class)
         ->args([
-            service('acme_spellcheck.translator_bag'),
-            service('acme_spellcheck.locale_resolver'),
-            service('acme_spellcheck.domain_filter'),
-            service('acme_spellcheck.translation_file_locator'),
-            service('acme_spellcheck.diagnostics'),
-            param('acme_spellcheck.translations.include_fallbacks'),
-            param('acme_spellcheck.translations.check_keys'),
-            param('acme_spellcheck.code.language'),
+            service('php_spellcheck.translator_bag'),
+            service('php_spellcheck.locale_resolver'),
+            service('php_spellcheck.domain_filter'),
+            service('php_spellcheck.translation_file_locator'),
+            service('php_spellcheck.diagnostics'),
+            param('php_spellcheck.translations.include_fallbacks'),
+            param('php_spellcheck.translations.check_keys'),
+            param('php_spellcheck.code.language'),
         ]);
 
-    $services->set('acme_spellcheck.source.translation_files', TranslationFilesSource::class)
+    $services->set('php_spellcheck.source.translation_files', TranslationFilesSource::class)
         ->args([
             abstract_arg('translation loaders locator, set by RegisterTranslationLoadersPass'),
-            param('acme_spellcheck.translations.paths'),
-            service('acme_spellcheck.domain_filter'),
-            service('acme_spellcheck.locale_resolver'),
-            service('acme_spellcheck.translation_file_locator'),
-            service('acme_spellcheck.diagnostics'),
-            param('acme_spellcheck.translations.check_keys'),
-            param('acme_spellcheck.code.language'),
+            param('php_spellcheck.translations.paths'),
+            service('php_spellcheck.domain_filter'),
+            service('php_spellcheck.locale_resolver'),
+            service('php_spellcheck.translation_file_locator'),
+            service('php_spellcheck.diagnostics'),
+            param('php_spellcheck.translations.check_keys'),
+            param('php_spellcheck.code.language'),
         ]);
 
-    $services->set('acme_spellcheck.source.php_factory', PhpSourceFactory::class)
+    $services->set('php_spellcheck.source.php_factory', PhpSourceFactory::class)
         ->args([
-            param('acme_spellcheck.code.paths'),
-            param('acme_spellcheck.code.exclude'),
-            param('acme_spellcheck.code.check'),
-            param('acme_spellcheck.code.language'),
-            param('acme_spellcheck.code.max_file_size'),
-            param('acme_spellcheck.suppression_prefix'),
+            param('php_spellcheck.code.paths'),
+            param('php_spellcheck.code.exclude'),
+            param('php_spellcheck.code.check'),
+            param('php_spellcheck.code.language'),
+            param('php_spellcheck.code.max_file_size'),
+            param('php_spellcheck.suppression_prefix'),
             param('kernel.project_dir'),
-            service('acme_spellcheck.diagnostics'),
-            service('acme_spellcheck.statistics'),
+            service('php_spellcheck.diagnostics'),
+            service('php_spellcheck.statistics'),
         ]);
 
-    $services->set('acme_spellcheck.source.php', \PHPSpellcheck\Core\Source\PhpFileSource::class)
-        ->factory([service('acme_spellcheck.source.php_factory'), 'create'])
+    $services->set('php_spellcheck.source.php', \PHPSpellcheck\Core\Source\PhpFileSource::class)
+        ->factory([service('php_spellcheck.source.php_factory'), 'create'])
         ->args([null, []]);
 
     // -------------------------------------------------------------- reporters
 
-    $services->set('acme_spellcheck.reporter.table', TableReporter::class)
-        ->tag('acme_spellcheck.reporter');
-    $services->set('acme_spellcheck.reporter.json', JsonReporter::class)
-        ->tag('acme_spellcheck.reporter');
-    $services->set('acme_spellcheck.reporter.github', GithubReporter::class)
-        ->tag('acme_spellcheck.reporter');
-    $services->set('acme_spellcheck.reporter.checkstyle', CheckstyleReporter::class)
-        ->tag('acme_spellcheck.reporter');
-    $services->set('acme_spellcheck.reporter.junit', JUnitReporter::class)
-        ->tag('acme_spellcheck.reporter');
-    $services->set('acme_spellcheck.reporter.gitlab', GitlabReporter::class)
-        ->tag('acme_spellcheck.reporter');
-    $services->set('acme_spellcheck.reporter.csv', CsvReporter::class)
-        ->tag('acme_spellcheck.reporter');
+    $services->set('php_spellcheck.reporter.table', TableReporter::class)
+        ->tag('php_spellcheck.reporter');
+    $services->set('php_spellcheck.reporter.json', JsonReporter::class)
+        ->tag('php_spellcheck.reporter');
+    $services->set('php_spellcheck.reporter.github', GithubReporter::class)
+        ->tag('php_spellcheck.reporter');
+    $services->set('php_spellcheck.reporter.checkstyle', CheckstyleReporter::class)
+        ->tag('php_spellcheck.reporter');
+    $services->set('php_spellcheck.reporter.junit', JUnitReporter::class)
+        ->tag('php_spellcheck.reporter');
+    $services->set('php_spellcheck.reporter.gitlab', GitlabReporter::class)
+        ->tag('php_spellcheck.reporter');
+    $services->set('php_spellcheck.reporter.csv', CsvReporter::class)
+        ->tag('php_spellcheck.reporter');
 
-    $services->set('acme_spellcheck.reporter_registry', ReporterRegistry::class)
-        ->args([tagged_iterator('acme_spellcheck.reporter')]);
+    $services->set('php_spellcheck.reporter_registry', ReporterRegistry::class)
+        ->args([tagged_iterator('php_spellcheck.reporter')]);
 
     // --------------------------------------------------------------- commands
 
     $commandArguments = [
-        service('acme_spellcheck.runner'),
-        service('acme_spellcheck.reporter_registry'),
-        service('acme_spellcheck.baseline_storage'),
-        service('acme_spellcheck.run_configuration_factory'),
-        service('acme_spellcheck.diagnostics'),
-        param('acme_spellcheck.baseline.path'),
+        service('php_spellcheck.runner'),
+        service('php_spellcheck.reporter_registry'),
+        service('php_spellcheck.baseline_storage'),
+        service('php_spellcheck.run_configuration_factory'),
+        service('php_spellcheck.diagnostics'),
+        param('php_spellcheck.baseline.path'),
     ];
 
-    $services->set('acme_spellcheck.command.all', SpellcheckCommand::class)
+    $services->set('php_spellcheck.command.all', SpellcheckCommand::class)
         ->args(array_merge($commandArguments, [
-            service('acme_spellcheck.source.translations')->nullOnInvalid(),
-            service('acme_spellcheck.source.php')->nullOnInvalid(),
+            service('php_spellcheck.source.translations')->nullOnInvalid(),
+            service('php_spellcheck.source.php')->nullOnInvalid(),
         ]))
         ->tag('console.command');
 
-    $services->set('acme_spellcheck.command.translations', SpellcheckTranslationsCommand::class)
-        ->args(array_merge($commandArguments, [service('acme_spellcheck.source.translations')]))
+    $services->set('php_spellcheck.command.translations', SpellcheckTranslationsCommand::class)
+        ->args(array_merge($commandArguments, [service('php_spellcheck.source.translations')]))
         ->tag('console.command');
 
-    $services->set('acme_spellcheck.command.code', SpellcheckCodeCommand::class)
-        ->args(array_merge($commandArguments, [service('acme_spellcheck.source.php_factory')]))
+    $services->set('php_spellcheck.command.code', SpellcheckCodeCommand::class)
+        ->args(array_merge($commandArguments, [service('php_spellcheck.source.php_factory')]))
         ->tag('console.command');
 
-    $services->set('acme_spellcheck.command.baseline', SpellcheckBaselineCommand::class)
+    $services->set('php_spellcheck.command.baseline', SpellcheckBaselineCommand::class)
         ->args(array_merge($commandArguments, [
-            service('acme_spellcheck.source.translations')->nullOnInvalid(),
-            service('acme_spellcheck.source.php')->nullOnInvalid(),
+            service('php_spellcheck.source.translations')->nullOnInvalid(),
+            service('php_spellcheck.source.php')->nullOnInvalid(),
         ]))
         ->tag('console.command');
 
-    $services->set('acme_spellcheck.command.doctor', SpellcheckDoctorCommand::class)
+    $services->set('php_spellcheck.command.doctor', SpellcheckDoctorCommand::class)
         ->args([
-            service('acme_spellcheck.speller'),
-            service('acme_spellcheck.dictionary'),
-            service('acme_spellcheck.locale_dictionary_map'),
-            service('acme_spellcheck.locale_resolver')->nullOnInvalid(),
-            service('acme_spellcheck.baseline_storage'),
-            service('acme_spellcheck.reporter_registry'),
-            param('acme_spellcheck.backend'),
-            param('acme_spellcheck.baseline.path'),
-            param('acme_spellcheck.dictionary_paths'),
+            service('php_spellcheck.speller'),
+            service('php_spellcheck.dictionary'),
+            service('php_spellcheck.locale_dictionary_map'),
+            service('php_spellcheck.locale_resolver')->nullOnInvalid(),
+            service('php_spellcheck.baseline_storage'),
+            service('php_spellcheck.reporter_registry'),
+            param('php_spellcheck.backend'),
+            param('php_spellcheck.baseline.path'),
+            param('php_spellcheck.dictionary_paths'),
         ])
         ->tag('console.command');
 
-    $services->set('acme_spellcheck.command.dictionary_add', SpellcheckDictionaryAddCommand::class)
+    $services->set('php_spellcheck.command.dictionary_add', SpellcheckDictionaryAddCommand::class)
         ->args([
-            service('acme_spellcheck.dictionary_loader'),
-            param('acme_spellcheck.dictionaries'),
+            service('php_spellcheck.dictionary_loader'),
+            param('php_spellcheck.dictionaries'),
         ])
         ->tag('console.command');
 
-    $services->set('acme_spellcheck.command.debug_fragments', SpellcheckDebugFragmentsCommand::class)
+    $services->set('php_spellcheck.command.debug_fragments', SpellcheckDebugFragmentsCommand::class)
         ->args([
-            service('acme_spellcheck.processor_chain'),
-            service('acme_spellcheck.tokenizer_registry'),
-            service('acme_spellcheck.source.translations')->nullOnInvalid(),
-            service('acme_spellcheck.source.php')->nullOnInvalid(),
+            service('php_spellcheck.processor_chain'),
+            service('php_spellcheck.tokenizer_registry'),
+            service('php_spellcheck.source.translations')->nullOnInvalid(),
+            service('php_spellcheck.source.php')->nullOnInvalid(),
         ])
         ->tag('console.command');
 };

@@ -76,7 +76,7 @@ final class SpellcheckDoctorCommand extends Command
             ++$errors;
             $io->error(\sprintf(
                 "The selected backend is not usable.\n%s",
-                self::INSTALL_HINTS[$inner->getName()] ?? 'Configure acme_spellcheck.backend: wordlist to run without binaries.',
+                self::INSTALL_HINTS[$inner->getName()] ?? 'Configure php_spellcheck.backend: wordlist to run without binaries.',
             ));
         }
 
