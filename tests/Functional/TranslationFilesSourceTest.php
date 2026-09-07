@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Tests\Functional;
+namespace PHPSpellcheck\SpellcheckBundle\Tests\Functional;
 
-use Acme\Spellcheck\Model\TextFragment;
-use Acme\SpellcheckBundle\Source\TranslationFilesSource;
-use Acme\SpellcheckBundle\Tests\Fixtures\TestKernel;
+use PHPSpellcheck\Core\Model\TextFragment;
+use PHPSpellcheck\SpellcheckBundle\Source\TranslationFilesSource;
+use PHPSpellcheck\SpellcheckBundle\Tests\Fixtures\TestKernel;
 use PHPUnit\Framework\TestCase;
 
 final class TranslationFilesSourceTest extends TestCase

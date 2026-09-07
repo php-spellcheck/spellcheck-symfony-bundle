@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Factory;
+namespace PHPSpellcheck\SpellcheckBundle\Factory;
 
-use Acme\Spellcheck\Checker\RunStatisticsCollector;
-use Acme\Spellcheck\Diagnostics\DiagnosticCollector;
-use Acme\Spellcheck\Php\IdentifierKind;
-use Acme\Spellcheck\Source\PhpFileSource;
+use PHPSpellcheck\Core\Checker\RunStatisticsCollector;
+use PHPSpellcheck\Core\Diagnostics\DiagnosticCollector;
+use PHPSpellcheck\Core\Php\IdentifierKind;
+use PHPSpellcheck\Core\Source\PhpFileSource;
 
 /**
  * Builds PhpFileSource from the flat configuration parameters, converting the

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Factory;
+namespace PHPSpellcheck\SpellcheckBundle\Factory;
 
-use Acme\Spellcheck\Checker\RunStatisticsCollector;
-use Acme\Spellcheck\Dictionary\DictionaryInterface;
-use Acme\Spellcheck\Speller\CachingSpeller;
-use Acme\Spellcheck\Speller\SpellerInterface;
-use Acme\Spellcheck\Version;
+use PHPSpellcheck\Core\Checker\RunStatisticsCollector;
+use PHPSpellcheck\Core\Dictionary\DictionaryInterface;
+use PHPSpellcheck\Core\Speller\CachingSpeller;
+use PHPSpellcheck\Core\Speller\SpellerInterface;
+use PHPSpellcheck\Core\Version;
 use Psr\Cache\CacheItemPoolInterface;
 
 /**

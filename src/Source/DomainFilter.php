@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Source;
+namespace PHPSpellcheck\SpellcheckBundle\Source;
 
 /**
  * Include and exclude lists for translation domains, with glob support.

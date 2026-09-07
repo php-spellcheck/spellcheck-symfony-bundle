@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Tests\Fixtures;
+namespace PHPSpellcheck\SpellcheckBundle\Tests\Fixtures;
 
-use Acme\SpellcheckBundle\AcmeSpellcheckBundle;
+use PHPSpellcheck\SpellcheckBundle\AcmeSpellcheckBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -89,8 +89,13 @@ final class TestKernel extends Kernel
 
         $container->services()
             ->alias('test.acme_spellcheck.runner', 'acme_spellcheck.runner')->public()
-            ->alias('test.acme_spellcheck.source.translations', 'acme_spellcheck.source.translations')->public()
-            ->alias('test.acme_spellcheck.locale_resolver', 'acme_spellcheck.locale_resolver')->public()
         ;
+
+        if ($this->withTranslator) {
+            $container->services()
+                ->alias('test.acme_spellcheck.source.translations', 'acme_spellcheck.source.translations')->public()
+                ->alias('test.acme_spellcheck.locale_resolver', 'acme_spellcheck.locale_resolver')->public()
+            ;
+        }
     }
 }

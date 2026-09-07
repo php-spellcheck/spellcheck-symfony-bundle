@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Command;
+namespace PHPSpellcheck\SpellcheckBundle\Command;
 
-use Acme\Spellcheck\Baseline\BaselineStorage;
-use Acme\Spellcheck\Checker\ExitCodeCalculator;
-use Acme\Spellcheck\Dictionary\DictionaryInterface;
-use Acme\Spellcheck\Dictionary\LocaleDictionaryMap;
-use Acme\Spellcheck\Exception\BaselineSchemaException;
-use Acme\Spellcheck\Report\ReporterRegistry;
-use Acme\Spellcheck\Speller\CachingSpeller;
-use Acme\Spellcheck\Speller\ChainSpeller;
-use Acme\Spellcheck\Speller\SpellerInterface;
-use Acme\Spellcheck\Version;
-use Acme\SpellcheckBundle\Locale\LocaleResolver;
+use PHPSpellcheck\Core\Baseline\BaselineStorage;
+use PHPSpellcheck\Core\Checker\ExitCodeCalculator;
+use PHPSpellcheck\Core\Dictionary\DictionaryInterface;
+use PHPSpellcheck\Core\Dictionary\LocaleDictionaryMap;
+use PHPSpellcheck\Core\Exception\BaselineSchemaException;
+use PHPSpellcheck\Core\Report\ReporterRegistry;
+use PHPSpellcheck\Core\Speller\CachingSpeller;
+use PHPSpellcheck\Core\Speller\ChainSpeller;
+use PHPSpellcheck\Core\Speller\SpellerInterface;
+use PHPSpellcheck\Core\Version;
+use PHPSpellcheck\SpellcheckBundle\Locale\LocaleResolver;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -57,7 +57,7 @@ final class SpellcheckDoctorCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $io->title(sprintf('Spellcheck environment (acme/spellcheck %s)', Version::string()));
+        $io->title(sprintf('Spellcheck environment (php-spellcheck/spellcheck-core %s)', Version::string()));
 
         $warnings = 0;
         $errors = 0;

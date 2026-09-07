@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\DependencyInjection;
+namespace PHPSpellcheck\SpellcheckBundle\DependencyInjection;
 
-use Acme\Spellcheck\Dictionary\BuiltinDictionaries;
-use Acme\Spellcheck\Filter\MisspellingFilterInterface;
-use Acme\Spellcheck\Processor\TextProcessorInterface;
-use Acme\Spellcheck\Report\ReporterInterface;
-use Acme\Spellcheck\Source\SourceInterface;
-use Acme\Spellcheck\Speller\SpellerInterface;
-use Acme\Spellcheck\Tokenizer\TokenizerInterface;
+use PHPSpellcheck\Core\Dictionary\BuiltinDictionaries;
+use PHPSpellcheck\Core\Filter\MisspellingFilterInterface;
+use PHPSpellcheck\Core\Processor\TextProcessorInterface;
+use PHPSpellcheck\Core\Report\ReporterInterface;
+use PHPSpellcheck\Core\Source\SourceInterface;
+use PHPSpellcheck\Core\Speller\SpellerInterface;
+use PHPSpellcheck\Core\Tokenizer\TokenizerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;

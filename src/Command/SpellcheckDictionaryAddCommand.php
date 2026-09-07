@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Command;
+namespace PHPSpellcheck\SpellcheckBundle\Command;
 
-use Acme\Spellcheck\Checker\ExitCodeCalculator;
-use Acme\Spellcheck\Dictionary\DictionaryLoader;
+use PHPSpellcheck\Core\Checker\ExitCodeCalculator;
+use PHPSpellcheck\Core\Dictionary\DictionaryLoader;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

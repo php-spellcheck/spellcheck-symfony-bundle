@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Command;
+namespace PHPSpellcheck\SpellcheckBundle\Command;
 
-use Acme\Spellcheck\Baseline\BaselineStorage;
-use Acme\Spellcheck\Checker\SpellcheckRunner;
-use Acme\Spellcheck\Diagnostics\DiagnosticCollector;
-use Acme\Spellcheck\Report\ReporterRegistry;
-use Acme\Spellcheck\Source\SourceInterface;
-use Acme\SpellcheckBundle\Checker\RunConfigurationFactory;
+use PHPSpellcheck\Core\Baseline\BaselineStorage;
+use PHPSpellcheck\Core\Checker\SpellcheckRunner;
+use PHPSpellcheck\Core\Diagnostics\DiagnosticCollector;
+use PHPSpellcheck\Core\Report\ReporterRegistry;
+use PHPSpellcheck\Core\Source\SourceInterface;
+use PHPSpellcheck\SpellcheckBundle\Checker\RunConfigurationFactory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 

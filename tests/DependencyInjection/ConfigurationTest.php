@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Tests\DependencyInjection;
+namespace PHPSpellcheck\SpellcheckBundle\Tests\DependencyInjection;
 
-use Acme\SpellcheckBundle\DependencyInjection\Configuration;
+use PHPSpellcheck\SpellcheckBundle\DependencyInjection\Configuration;
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -114,8 +114,8 @@ final class ConfigurationTest extends TestCase
     {
         $this->assertProcessedConfigurationEquals(
             [['translations' => ['source' => 'translator']]],
-            ['exclude_domains' => ['validators', 'security']],
-            'translations.exclude_domains',
+            ['translations' => $this->translationsDefaults(['source' => 'translator', 'exclude_domains' => ['validators', 'security']])],
+            'translations',
         );
     }
 
@@ -123,8 +123,8 @@ final class ConfigurationTest extends TestCase
     {
         $this->assertProcessedConfigurationEquals(
             [['translations' => ['source' => 'translator', 'exclude_domains' => ['admin_*']]]],
-            ['exclude_domains' => ['admin_*']],
-            'translations.exclude_domains',
+            ['translations' => $this->translationsDefaults(['source' => 'translator', 'exclude_domains' => ['admin_*']])],
+            'translations',
         );
     }
 
@@ -132,16 +132,38 @@ final class ConfigurationTest extends TestCase
     {
         $this->assertProcessedConfigurationEquals(
             [['translations' => ['source' => 'files']]],
-            ['exclude_domains' => []],
-            'translations.exclude_domains',
+            ['translations' => $this->translationsDefaults()],
+            'translations',
         );
+    }
+
+    /**
+     * @param array<string, mixed> $overrides
+     *
+     * @return array<string, mixed>
+     */
+    private function translationsDefaults(array $overrides = []): array
+    {
+        return array_replace([
+            'enabled' => true,
+            'source' => 'files',
+            'paths' => ['%kernel.project_dir%/translations'],
+            'locales' => [],
+            'domains' => [],
+            'exclude_domains' => [],
+            'include_fallbacks' => false,
+            'check_keys' => false,
+            'check_notes' => false,
+            'icu_mode' => 'auto',
+            'excluded_languages' => ['ja', 'zh', 'ko', 'th'],
+        ], $overrides);
     }
 
     public function testProfilesAreArbitrary(): void
     {
         $this->assertProcessedConfigurationEquals(
             [['profiles' => ['ci' => ['max_suggestions' => 0]]]],
-            ['ci' => ['max_suggestions' => 0]],
+            ['profiles' => ['ci' => ['max_suggestions' => 0]]],
             'profiles',
         );
     }

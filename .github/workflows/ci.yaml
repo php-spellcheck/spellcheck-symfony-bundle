@@ -1,0 +1,96 @@
+name: CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+concurrency:
+    group: ci-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    tests:
+        name: PHP ${{ matrix.php }} / Symfony ${{ matrix.symfony }} / ${{ matrix.deps }}${{ matrix.parser && ' / php-parser ' || '' }}${{ matrix.parser }}
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    # The 5.4 LTS floor, with the lowest dependencies allowed:
+                    # this is the job that catches accidental use of APIs added
+                    # after 5.4.
+                    - { php: '8.1', symfony: '5.4.*', deps: lowest }
+                    - { php: '8.1', symfony: '5.4.*', deps: highest }
+                    - { php: '8.2', symfony: '6.4.*', deps: highest }
+                    - { php: '8.3', symfony: '7.2.*', deps: highest }
+                    - { php: '8.4', symfony: '7.2.*', deps: highest }
+                    # Dedicated job for php-parser 4: without it a regression on
+                    # the compatibility shim goes unnoticed.
+                    - { php: '8.3', symfony: '6.4.*', deps: highest, parser: '^4.18' }
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install the spell checking backends
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y --no-install-recommends \
+                      hunspell hunspell-it hunspell-en-us hunspell-de-de \
+                      aspell aspell-it aspell-en libpspell-dev
+
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: mbstring, pspell
+                  coverage: none
+                  ini-values: memory_limit=-1
+
+            - name: Pin the Symfony version
+              run: |
+                  composer require --no-update --no-interaction \
+                      symfony/config:${{ matrix.symfony }} \
+                      symfony/console:${{ matrix.symfony }} \
+                      symfony/dependency-injection:${{ matrix.symfony }} \
+                      symfony/finder:${{ matrix.symfony }} \
+                      symfony/http-kernel:${{ matrix.symfony }} \
+                      symfony/process:${{ matrix.symfony }} \
+                      symfony/translation:${{ matrix.symfony }}
+                  composer require --dev --no-update --no-interaction \
+                      symfony/cache:${{ matrix.symfony }} \
+                      symfony/filesystem:${{ matrix.symfony }} \
+                      symfony/framework-bundle:${{ matrix.symfony }} \
+                      symfony/yaml:${{ matrix.symfony }}
+
+            - name: Pin php-parser
+              if: matrix.parser
+              run: composer require --no-update --no-interaction nikic/php-parser:${{ matrix.parser }}
+
+            - uses: ramsey/composer-install@v3
+              with:
+                  dependency-versions: ${{ matrix.deps }}
+
+            - name: Unit and functional tests
+              run: vendor/bin/phpunit
+
+            - name: Integration tests against the real binaries
+              run: vendor/bin/phpunit --group integration
+
+    static:
+        name: Static analysis and coding standard
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+                  extensions: mbstring
+                  coverage: none
+                  ini-values: memory_limit=-1
+
+            - uses: ramsey/composer-install@v3
+
+            - run: vendor/bin/phpstan analyse --error-format=github --no-progress
+
+            - run: vendor/bin/php-cs-fixer fix --dry-run --diff --using-cache=no

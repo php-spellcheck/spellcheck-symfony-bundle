@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Source;
+namespace PHPSpellcheck\SpellcheckBundle\Source;
 
-use Acme\Spellcheck\Diagnostics\DiagnosticCollector;
-use Acme\Spellcheck\Locator\TranslationFileLocator;
-use Acme\Spellcheck\Model\DiagnosticCode;
-use Acme\Spellcheck\Model\FragmentContext;
-use Acme\Spellcheck\Model\Location;
-use Acme\Spellcheck\Model\TextFragment;
-use Acme\Spellcheck\Model\TokenizerMode;
-use Acme\Spellcheck\Source\SourceInterface;
-use Acme\SpellcheckBundle\Locale\LocaleResolver;
+use PHPSpellcheck\Core\Diagnostics\DiagnosticCollector;
+use PHPSpellcheck\Core\Locator\TranslationFileLocator;
+use PHPSpellcheck\Core\Model\DiagnosticCode;
+use PHPSpellcheck\Core\Model\FragmentContext;
+use PHPSpellcheck\Core\Model\Location;
+use PHPSpellcheck\Core\Model\TextFragment;
+use PHPSpellcheck\Core\Model\TokenizerMode;
+use PHPSpellcheck\Core\Source\SourceInterface;
+use PHPSpellcheck\SpellcheckBundle\Locale\LocaleResolver;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Translation\MessageCatalogueInterface;

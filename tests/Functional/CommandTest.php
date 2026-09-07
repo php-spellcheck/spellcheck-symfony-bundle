@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Tests\Functional;
+namespace PHPSpellcheck\SpellcheckBundle\Tests\Functional;
 
-use Acme\Spellcheck\Checker\ExitCodeCalculator;
-use Acme\SpellcheckBundle\Tests\Fixtures\TestKernel;
+use PHPSpellcheck\Core\Checker\ExitCodeCalculator;
+use PHPSpellcheck\SpellcheckBundle\Tests\Fixtures\TestKernel;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -27,7 +27,7 @@ final class CommandTest extends TestCase
 
     public function testTranslationsCommandFindsTheTypos(): void
     {
-        $tester = $this->run('spellcheck:translations', ['--format' => 'json']);
+        $tester = $this->doRun('spellcheck:translations', ['--format' => 'json']);
 
         self::assertSame(ExitCodeCalculator::ISSUES_FOUND, $tester->getStatusCode());
 
@@ -41,7 +41,7 @@ final class CommandTest extends TestCase
 
     public function testPlaceholdersAndMarkupProduceNoFalsePositives(): void
     {
-        $payload = $this->decode($this->run('spellcheck:translations', ['--format' => 'json'])->getDisplay());
+        $payload = $this->decode($this->doRun('spellcheck:translations', ['--format' => 'json'])->getDisplay());
         $keys = array_column(array_column($payload['issues'], 'context'), 'key');
 
         self::assertNotContains('cta', $keys, 'HTML markup must not produce issues');
@@ -51,7 +51,7 @@ final class CommandTest extends TestCase
     public function testLocaleOptionRestrictsTheRun(): void
     {
         $payload = $this->decode(
-            $this->run('spellcheck:translations', ['--format' => 'json', '--locale' => ['en']])->getDisplay(),
+            $this->doRun('spellcheck:translations', ['--format' => 'json', '--locale' => ['en']])->getDisplay(),
         );
 
         self::assertSame([], $payload['issues']);
@@ -60,7 +60,7 @@ final class CommandTest extends TestCase
     public function testDomainOptionRestrictsTheRun(): void
     {
         $payload = $this->decode(
-            $this->run('spellcheck:translations', ['--format' => 'json', '--domain' => ['admin.forms']])->getDisplay(),
+            $this->doRun('spellcheck:translations', ['--format' => 'json', '--domain' => ['admin.forms']])->getDisplay(),
         );
 
         self::assertSame([], $payload['issues']);
@@ -68,14 +68,14 @@ final class CommandTest extends TestCase
 
     public function testCodeCommandFindsTheTypoInAClassName(): void
     {
-        $payload = $this->decode($this->run('spellcheck:code', ['--format' => 'json'])->getDisplay());
+        $payload = $this->decode($this->doRun('spellcheck:code', ['--format' => 'json'])->getDisplay());
 
         self::assertContains('Suscriber', array_column($payload['issues'], 'word'));
     }
 
     public function testCodeCommandAcceptsExplicitPaths(): void
     {
-        $tester = $this->run('spellcheck:code', [
+        $tester = $this->doRun('spellcheck:code', [
             'paths' => [__DIR__.'/../Fixtures/php/OrderSuscriber.php'],
             '--format' => 'json',
         ]);
@@ -85,7 +85,7 @@ final class CommandTest extends TestCase
 
     public function testGithubFormatEmitsAnnotations(): void
     {
-        $display = $this->run('spellcheck:translations', ['--format' => 'github'])->getDisplay();
+        $display = $this->doRun('spellcheck:translations', ['--format' => 'github'])->getDisplay();
 
         self::assertStringContainsString('::error ', $display);
         self::assertStringContainsString('Unknown word "messagi"', $display);
@@ -93,18 +93,18 @@ final class CommandTest extends TestCase
 
     public function testUnknownFormatIsAnEnvironmentError(): void
     {
-        $tester = $this->run('spellcheck:translations', ['--format' => 'nope']);
+        $tester = $this->doRun('spellcheck:translations', ['--format' => 'nope']);
 
         self::assertSame(ExitCodeCalculator::ENVIRONMENT_ERROR, $tester->getStatusCode());
     }
 
     public function testBaselineSuppressesEverythingOnASecondRun(): void
     {
-        $this->run('spellcheck:baseline');
+        $this->doRun('spellcheck:baseline');
 
         self::assertFileExists(self::BASELINE);
 
-        $tester = $this->run('spellcheck', ['--format' => 'json']);
+        $tester = $this->doRun('spellcheck', ['--format' => 'json']);
 
         self::assertSame(ExitCodeCalculator::SUCCESS, $tester->getStatusCode());
 
@@ -116,19 +116,19 @@ final class CommandTest extends TestCase
 
     public function testBaselineIsIgnoredOnDemand(): void
     {
-        $this->run('spellcheck:baseline');
+        $this->doRun('spellcheck:baseline');
 
-        $tester = $this->run('spellcheck', ['--format' => 'json', '--no-baseline' => true]);
+        $tester = $this->doRun('spellcheck', ['--format' => 'json', '--no-baseline' => true]);
 
         self::assertSame(ExitCodeCalculator::ISSUES_FOUND, $tester->getStatusCode());
     }
 
     public function testBaselineIsDeterministic(): void
     {
-        $this->run('spellcheck:baseline');
+        $this->doRun('spellcheck:baseline');
         $first = (string) file_get_contents(self::BASELINE);
 
-        $this->run('spellcheck:baseline');
+        $this->doRun('spellcheck:baseline');
         $second = (string) file_get_contents(self::BASELINE);
 
         self::assertSame($first, $second);
@@ -136,14 +136,14 @@ final class CommandTest extends TestCase
 
     public function testBaselineDryRunWritesNothing(): void
     {
-        $this->run('spellcheck:baseline', ['--dry-run' => true]);
+        $this->doRun('spellcheck:baseline', ['--dry-run' => true]);
 
         self::assertFileDoesNotExist(self::BASELINE);
     }
 
     public function testDoctorDescribesTheEnvironment(): void
     {
-        $tester = $this->run('spellcheck:doctor');
+        $tester = $this->doRun('spellcheck:doctor');
         $display = $tester->getDisplay();
 
         self::assertStringContainsString('wordlist', $display);
@@ -156,7 +156,7 @@ final class CommandTest extends TestCase
 
     public function testDebugFragmentsShowsTheProcessedText(): void
     {
-        $display = $this->run('spellcheck:debug:fragments', ['--limit' => '3'])->getDisplay();
+        $display = $this->doRun('spellcheck:debug:fragments', ['--limit' => '3'])->getDisplay();
 
         self::assertStringContainsString('processed', $display);
         self::assertStringContainsString('tokens', $display);
@@ -164,7 +164,7 @@ final class CommandTest extends TestCase
 
     public function testDebugFragmentsCanListTheProcessorChain(): void
     {
-        $display = $this->run('spellcheck:debug:fragments', ['--processors' => true])->getDisplay();
+        $display = $this->doRun('spellcheck:debug:fragments', ['--processors' => true])->getDisplay();
 
         // The chain must be ordered by descending priority.
         self::assertLessThan(
@@ -178,7 +178,7 @@ final class CommandTest extends TestCase
         $file = __DIR__.'/../Fixtures/var/project.txt';
         (new Filesystem())->dumpFile($file, "zeta\nalpha\n");
 
-        $this->run('spellcheck:dictionary:add', ['words' => ['beta', 'alpha'], '--file' => $file]);
+        $this->doRun('spellcheck:dictionary:add', ['words' => ['beta', 'alpha'], '--file' => $file]);
 
         self::assertSame("alpha\nbeta\nzeta\n", $this->withoutComments((string) file_get_contents($file)));
     }
@@ -196,7 +196,7 @@ final class CommandTest extends TestCase
     /**
      * @param array<string, mixed> $parameters
      */
-    private function run(string $command, array $parameters = []): CommandTester
+    private function doRun(string $command, array $parameters = []): CommandTester
     {
         $kernel = new TestKernel();
         $kernel->boot();

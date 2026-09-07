@@ -10,7 +10,7 @@
         <!-- No Symfony deprecation may be triggered by this bundle. -->
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=0"/>
         <env name="APP_ENV" value="test"/>
-        <env name="KERNEL_CLASS" value="Acme\SpellcheckBundle\Tests\Fixtures\TestKernel"/>
+        <env name="KERNEL_CLASS" value="PHPSpellcheck\SpellcheckBundle\Tests\Fixtures\TestKernel"/>
     </php>
     <testsuites>
         <testsuite name="bundle">

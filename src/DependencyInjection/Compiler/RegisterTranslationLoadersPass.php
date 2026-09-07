@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\DependencyInjection\Compiler;
+namespace PHPSpellcheck\SpellcheckBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;

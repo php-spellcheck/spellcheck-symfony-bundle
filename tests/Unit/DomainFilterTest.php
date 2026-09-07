@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Tests\Unit;
+namespace PHPSpellcheck\SpellcheckBundle\Tests\Unit;
 
-use Acme\SpellcheckBundle\Source\DomainFilter;
+use PHPSpellcheck\SpellcheckBundle\Source\DomainFilter;
 use PHPUnit\Framework\TestCase;
 
 final class DomainFilterTest extends TestCase

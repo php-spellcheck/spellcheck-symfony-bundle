@@ -1,6 +1,6 @@
 # AcmeSpellcheckBundle
 
-Symfony integration for [`acme/spellcheck`](https://github.com/acme/spellcheck):
+Symfony integration for [`php-spellcheck/spellcheck-core`](https://github.com/php-spellcheck/spellcheck-core):
 spell checks **every translation catalogue with the dictionary of its own
 locale**, and the **PHP code** of the project (class names, methods,
 properties, parameters, constants, docblocks, comments).
@@ -12,7 +12,7 @@ properties, parameters, constants, docblocks, comments).
 ## Install
 
 ```bash
-composer require --dev acme/spellcheck-bundle
+composer require --dev php-spellcheck/spellcheck-symfony-bundle
 ```
 
 Without Flex, register the bundle in dev and test only:
@@ -21,7 +21,7 @@ Without Flex, register the bundle in dev and test only:
 // config/bundles.php
 return [
     // ...
-    Acme\SpellcheckBundle\AcmeSpellcheckBundle::class => ['dev' => true, 'test' => true],
+    PHPSpellcheck\SpellcheckBundle\AcmeSpellcheckBundle::class => ['dev' => true, 'test' => true],
 ];
 ```
 
@@ -80,7 +80,7 @@ dictionaries installed on that particular machine.
 | `spellcheck:debug:fragments` | Shows what the pipeline produces |
 
 Shared options: `--format`, `--no-suggestions`, `--no-baseline`, `--no-cache`,
-`--fail-on-warning`, `--ignore-warnings`, `--report-outdated`, `--profile`.
+`--fail-on-warning`, `--ignore-warnings`, `--report-outdated`, `--config-profile`.
 
 Exit codes: `0` clean, `1` new issues, `2` configuration or environment error,
 `3` warnings only.

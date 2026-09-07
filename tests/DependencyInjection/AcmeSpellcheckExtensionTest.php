@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Tests\DependencyInjection;
+namespace PHPSpellcheck\SpellcheckBundle\Tests\DependencyInjection;
 
-use Acme\SpellcheckBundle\DependencyInjection\AcmeSpellcheckExtension;
+use PHPSpellcheck\SpellcheckBundle\DependencyInjection\AcmeSpellcheckExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use Symfony\Component\DependencyInjection\Reference;
 
 final class AcmeSpellcheckExtensionTest extends AbstractExtensionTestCase
 {
@@ -75,7 +76,7 @@ final class AcmeSpellcheckExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
             'acme_spellcheck.speller.caching',
             1,
-            'cache.acme_spellcheck',
+            new Reference('cache.acme_spellcheck'),
         );
     }
 

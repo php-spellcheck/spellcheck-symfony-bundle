@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Locale;
+namespace PHPSpellcheck\SpellcheckBundle\Locale;
 
-use Acme\Spellcheck\Diagnostics\DiagnosticCollector;
-use Acme\Spellcheck\Model\DiagnosticCode;
+use PHPSpellcheck\Core\Diagnostics\DiagnosticCollector;
+use PHPSpellcheck\Core\Model\DiagnosticCode;
 use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\DependencyInjection;
+namespace PHPSpellcheck\SpellcheckBundle\DependencyInjection;
 
-use Acme\Spellcheck\Dictionary\BuiltinDictionaries;
-use Acme\Spellcheck\Php\IdentifierKind;
-use Acme\Spellcheck\Processor\IcuMessageProcessor;
+use PHPSpellcheck\Core\Dictionary\BuiltinDictionaries;
+use PHPSpellcheck\Core\Php\IdentifierKind;
+use PHPSpellcheck\Core\Processor\IcuMessageProcessor;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -282,7 +282,7 @@ final class Configuration implements ConfigurationInterface
         \assert($node instanceof ArrayNodeDefinition);
 
         $node
-            ->info('Reusable option sets, applied with --profile=<name>.')
+            ->info('Reusable option sets, applied with --config-profile=<name>.')
             ->useAttributeAsKey('name')
             ->variablePrototype()->end()
         ;

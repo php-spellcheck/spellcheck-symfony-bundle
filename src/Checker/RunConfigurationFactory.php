@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Checker;
+namespace PHPSpellcheck\SpellcheckBundle\Checker;
 
-use Acme\Spellcheck\Checker\RunConfiguration;
-use Acme\Spellcheck\Diagnostics\DiagnosticCollector;
-use Acme\Spellcheck\Dictionary\LocaleDictionaryMap;
-use Acme\Spellcheck\Speller\SpellerInterface;
+use PHPSpellcheck\Core\Checker\RunConfiguration;
+use PHPSpellcheck\Core\Diagnostics\DiagnosticCollector;
+use PHPSpellcheck\Core\Dictionary\LocaleDictionaryMap;
+use PHPSpellcheck\Core\Speller\SpellerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
@@ -84,11 +84,11 @@ final class RunConfigurationFactory
      */
     private function profileOptions(InputInterface $input): array
     {
-        if (!$input->hasOption('profile')) {
+        if (!$input->hasOption('config-profile')) {
             return [];
         }
 
-        $name = $input->getOption('profile');
+        $name = $input->getOption('config-profile');
 
         if (!\is_string($name) || '' === $name) {
             return [];

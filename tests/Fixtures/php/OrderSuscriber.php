@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Tests\Fixtures\Php;
+namespace PHPSpellcheck\SpellcheckBundle\Tests\Fixtures\Php;
 
 /**
  * Fixture with a deliberate typo in the class name.

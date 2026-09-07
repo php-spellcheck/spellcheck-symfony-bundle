@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Tests\Unit;
+namespace PHPSpellcheck\SpellcheckBundle\Tests\Unit;
 
-use Acme\Spellcheck\Diagnostics\DiagnosticCollector;
-use Acme\SpellcheckBundle\Locale\LocaleResolver;
+use PHPSpellcheck\Core\Diagnostics\DiagnosticCollector;
+use PHPSpellcheck\SpellcheckBundle\Locale\LocaleResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\MessageCatalogueInterface;

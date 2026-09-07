@@ -4,65 +4,65 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Acme\Spellcheck\Baseline\BaselineStorage;
-use Acme\Spellcheck\Checker\MisspellingFactory;
-use Acme\Spellcheck\Checker\RunStatisticsCollector;
-use Acme\Spellcheck\Checker\SpellcheckRunner;
-use Acme\Spellcheck\Diagnostics\DiagnosticCollector;
-use Acme\Spellcheck\Dictionary\AggregateDictionary;
-use Acme\Spellcheck\Dictionary\DictionaryLoader;
-use Acme\Spellcheck\Dictionary\LocaleDictionaryMap;
-use Acme\Spellcheck\Filter\BaselineFilter;
-use Acme\Spellcheck\Filter\DeduplicationFilter;
-use Acme\Spellcheck\Filter\DictionaryFilter;
-use Acme\Spellcheck\Filter\FilterChain;
-use Acme\Spellcheck\Filter\PatternFilter;
-use Acme\Spellcheck\Icu\IcuMessageParser;
-use Acme\Spellcheck\Locator\PhpArrayKeyLocator;
-use Acme\Spellcheck\Locator\TranslationFileLocator;
-use Acme\Spellcheck\Locator\XliffKeyLocator;
-use Acme\Spellcheck\Locator\YamlKeyLocator;
-use Acme\Spellcheck\Processor\DocBlockProcessor;
-use Acme\Spellcheck\Processor\HtmlProcessor;
-use Acme\Spellcheck\Processor\IcuMessageProcessor;
-use Acme\Spellcheck\Processor\LegacyPluralProcessor;
-use Acme\Spellcheck\Processor\MarkdownProcessor;
-use Acme\Spellcheck\Processor\NormalizeApostropheProcessor;
-use Acme\Spellcheck\Processor\PlaceholderProcessor;
-use Acme\Spellcheck\Processor\ProcessorChain;
-use Acme\Spellcheck\Processor\SprintfProcessor;
-use Acme\Spellcheck\Processor\UrlProcessor;
-use Acme\Spellcheck\Report\CheckstyleReporter;
-use Acme\Spellcheck\Report\CsvReporter;
-use Acme\Spellcheck\Report\GithubReporter;
-use Acme\Spellcheck\Report\GitlabReporter;
-use Acme\Spellcheck\Report\JsonReporter;
-use Acme\Spellcheck\Report\JUnitReporter;
-use Acme\Spellcheck\Report\ReporterRegistry;
-use Acme\Spellcheck\Report\TableReporter;
-use Acme\Spellcheck\Speller\AspellSpeller;
-use Acme\Spellcheck\Speller\ChainSpeller;
-use Acme\Spellcheck\Speller\HunspellSpeller;
-use Acme\Spellcheck\Speller\NullSpeller;
-use Acme\Spellcheck\Speller\PspellSpeller;
-use Acme\Spellcheck\Speller\SuggestionFormatter;
-use Acme\Spellcheck\Speller\WordListSpeller;
-use Acme\Spellcheck\Tokenizer\IdentifierSplitter;
-use Acme\Spellcheck\Tokenizer\ProseTokenizer;
-use Acme\Spellcheck\Tokenizer\TokenizerRegistry;
-use Acme\SpellcheckBundle\Checker\RunConfigurationFactory;
-use Acme\SpellcheckBundle\Command\SpellcheckBaselineCommand;
-use Acme\SpellcheckBundle\Command\SpellcheckCodeCommand;
-use Acme\SpellcheckBundle\Command\SpellcheckCommand;
-use Acme\SpellcheckBundle\Command\SpellcheckDebugFragmentsCommand;
-use Acme\SpellcheckBundle\Command\SpellcheckDictionaryAddCommand;
-use Acme\SpellcheckBundle\Command\SpellcheckDoctorCommand;
-use Acme\SpellcheckBundle\Command\SpellcheckTranslationsCommand;
-use Acme\SpellcheckBundle\Factory\CachingSpellerFactory;
-use Acme\SpellcheckBundle\Factory\PhpSourceFactory;
-use Acme\SpellcheckBundle\Source\DomainFilter;
-use Acme\SpellcheckBundle\Source\TranslationFilesSource;
-use Acme\SpellcheckBundle\Source\TranslatorCatalogueSource;
+use PHPSpellcheck\Core\Baseline\BaselineStorage;
+use PHPSpellcheck\Core\Checker\MisspellingFactory;
+use PHPSpellcheck\Core\Checker\RunStatisticsCollector;
+use PHPSpellcheck\Core\Checker\SpellcheckRunner;
+use PHPSpellcheck\Core\Diagnostics\DiagnosticCollector;
+use PHPSpellcheck\Core\Dictionary\AggregateDictionary;
+use PHPSpellcheck\Core\Dictionary\DictionaryLoader;
+use PHPSpellcheck\Core\Dictionary\LocaleDictionaryMap;
+use PHPSpellcheck\Core\Filter\BaselineFilter;
+use PHPSpellcheck\Core\Filter\DeduplicationFilter;
+use PHPSpellcheck\Core\Filter\DictionaryFilter;
+use PHPSpellcheck\Core\Filter\FilterChain;
+use PHPSpellcheck\Core\Filter\PatternFilter;
+use PHPSpellcheck\Core\Icu\IcuMessageParser;
+use PHPSpellcheck\Core\Locator\PhpArrayKeyLocator;
+use PHPSpellcheck\Core\Locator\TranslationFileLocator;
+use PHPSpellcheck\Core\Locator\XliffKeyLocator;
+use PHPSpellcheck\Core\Locator\YamlKeyLocator;
+use PHPSpellcheck\Core\Processor\DocBlockProcessor;
+use PHPSpellcheck\Core\Processor\HtmlProcessor;
+use PHPSpellcheck\Core\Processor\IcuMessageProcessor;
+use PHPSpellcheck\Core\Processor\LegacyPluralProcessor;
+use PHPSpellcheck\Core\Processor\MarkdownProcessor;
+use PHPSpellcheck\Core\Processor\NormalizeApostropheProcessor;
+use PHPSpellcheck\Core\Processor\PlaceholderProcessor;
+use PHPSpellcheck\Core\Processor\ProcessorChain;
+use PHPSpellcheck\Core\Processor\SprintfProcessor;
+use PHPSpellcheck\Core\Processor\UrlProcessor;
+use PHPSpellcheck\Core\Report\CheckstyleReporter;
+use PHPSpellcheck\Core\Report\CsvReporter;
+use PHPSpellcheck\Core\Report\GithubReporter;
+use PHPSpellcheck\Core\Report\GitlabReporter;
+use PHPSpellcheck\Core\Report\JsonReporter;
+use PHPSpellcheck\Core\Report\JUnitReporter;
+use PHPSpellcheck\Core\Report\ReporterRegistry;
+use PHPSpellcheck\Core\Report\TableReporter;
+use PHPSpellcheck\Core\Speller\AspellSpeller;
+use PHPSpellcheck\Core\Speller\ChainSpeller;
+use PHPSpellcheck\Core\Speller\HunspellSpeller;
+use PHPSpellcheck\Core\Speller\NullSpeller;
+use PHPSpellcheck\Core\Speller\PspellSpeller;
+use PHPSpellcheck\Core\Speller\SuggestionFormatter;
+use PHPSpellcheck\Core\Speller\WordListSpeller;
+use PHPSpellcheck\Core\Tokenizer\IdentifierSplitter;
+use PHPSpellcheck\Core\Tokenizer\ProseTokenizer;
+use PHPSpellcheck\Core\Tokenizer\TokenizerRegistry;
+use PHPSpellcheck\SpellcheckBundle\Checker\RunConfigurationFactory;
+use PHPSpellcheck\SpellcheckBundle\Command\SpellcheckBaselineCommand;
+use PHPSpellcheck\SpellcheckBundle\Command\SpellcheckCodeCommand;
+use PHPSpellcheck\SpellcheckBundle\Command\SpellcheckCommand;
+use PHPSpellcheck\SpellcheckBundle\Command\SpellcheckDebugFragmentsCommand;
+use PHPSpellcheck\SpellcheckBundle\Command\SpellcheckDictionaryAddCommand;
+use PHPSpellcheck\SpellcheckBundle\Command\SpellcheckDoctorCommand;
+use PHPSpellcheck\SpellcheckBundle\Command\SpellcheckTranslationsCommand;
+use PHPSpellcheck\SpellcheckBundle\Factory\CachingSpellerFactory;
+use PHPSpellcheck\SpellcheckBundle\Factory\PhpSourceFactory;
+use PHPSpellcheck\SpellcheckBundle\Source\DomainFilter;
+use PHPSpellcheck\SpellcheckBundle\Source\TranslationFilesSource;
+use PHPSpellcheck\SpellcheckBundle\Source\TranslatorCatalogueSource;
 
 /**
  * Every dependency is declared explicitly: no autowire, no autoconfigure.
@@ -190,7 +190,7 @@ return static function (ContainerConfigurator $container): void {
     // The extension aliases this to the selected backend.
     $services->alias('acme_spellcheck.speller.selected', 'acme_spellcheck.speller.chain');
 
-    $services->set('acme_spellcheck.speller.caching', \Acme\Spellcheck\Speller\CachingSpeller::class)
+    $services->set('acme_spellcheck.speller.caching', \PHPSpellcheck\Core\Speller\CachingSpeller::class)
         ->factory([CachingSpellerFactory::class, 'create'])
         ->args([
             service('acme_spellcheck.speller.selected'),
@@ -293,7 +293,7 @@ return static function (ContainerConfigurator $container): void {
     // alias exists.
     $services->alias('acme_spellcheck.translator_bag', 'translator')->private();
 
-    $services->set('acme_spellcheck.locale_resolver', \Acme\SpellcheckBundle\Locale\LocaleResolver::class)
+    $services->set('acme_spellcheck.locale_resolver', \PHPSpellcheck\SpellcheckBundle\Locale\LocaleResolver::class)
         ->args([
             service('acme_spellcheck.translator_bag'),
             param('acme_spellcheck.translations.locales'),
@@ -339,7 +339,7 @@ return static function (ContainerConfigurator $container): void {
             service('acme_spellcheck.statistics'),
         ]);
 
-    $services->set('acme_spellcheck.source.php', \Acme\Spellcheck\Source\PhpFileSource::class)
+    $services->set('acme_spellcheck.source.php', \PHPSpellcheck\Core\Source\PhpFileSource::class)
         ->factory([service('acme_spellcheck.source.php_factory'), 'create'])
         ->args([null, []]);
 

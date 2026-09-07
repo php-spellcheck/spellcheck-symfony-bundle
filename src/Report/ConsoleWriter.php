@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Acme\SpellcheckBundle\Report;
+namespace PHPSpellcheck\SpellcheckBundle\Report;
 
-use Acme\Spellcheck\Report\WriterInterface;
+use PHPSpellcheck\Core\Report\WriterInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
