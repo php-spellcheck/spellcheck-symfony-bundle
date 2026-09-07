@@ -12,22 +12,6 @@ Everything runs in the Docker image, which ships hunspell, aspell, ext-pspell
 and the it/en/de/fr dictionaries. Working outside Docker is possible, but the
 integration tests will skip themselves if the binaries are missing.
 
-## The monorepo
-
-Two packages are developed here and published separately:
-
-| Directory | Package |
-|---|---|
-| `packages/spellcheck` | `acme/spellcheck`, framework agnostic engine |
-| `packages/spellcheck-bundle` | `acme/spellcheck-bundle`, Symfony integration |
-
-The root `composer.json` uses `replace` and a shared autoloader, so a single
-`composer install` covers both. `make merge` keeps the package files in sync
-with the root one; CI fails if they drift.
-
-Never add a Symfony dependency to `packages/spellcheck` beyond `finder` and
-`process`. The engine must remain usable in a plain script.
-
 ## Before opening a pull request
 
 ```bash

@@ -33,7 +33,7 @@ final class PHPSpellcheckBundle extends Bundle
 
     /**
      * The default convention already resolves
-     * PHPSpellcheck\SpellcheckBundle\DependencyInjection\AcmeSpellcheckExtension from
+     * PHPSpellcheck\SpellcheckBundle\DependencyInjection\PHPSpellcheckExtension from
      * the bundle name, so getContainerExtension() is not overridden.
      */
     public function getPath(): string
