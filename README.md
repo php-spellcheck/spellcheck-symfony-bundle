@@ -55,6 +55,33 @@ php_spellcheck:
         paths: ['%kernel.project_dir%/src']
 ```
 
+### Glob patterns in the paths
+
+`translations.paths` and `code.paths` accept glob patterns, with the Finder
+syntax: a single `*` stops at the directory separator, `**` crosses it.
+
+```yaml
+php_spellcheck:
+    translations:
+        paths:
+            - '%kernel.project_dir%/translations'
+            # Every module that ships its own catalogues.
+            - '%kernel.project_dir%/src/*/translations'
+            # Every catalogue under src, at any depth.
+            - '%kernel.project_dir%/src/**/*.yml'
+
+    code:
+        paths: ['%kernel.project_dir%/src/**/Entity']
+```
+
+Patterns are matched against the file system at every run, not when the
+container is built, so a new directory does not need a cache clear. The walk
+starts at the last segment without a wildcard, so keep that prefix as deep as
+possible: `%kernel.project_dir%/**/translations` scans `vendor/` and `var/` too.
+
+A pattern that matches nothing is dropped; if no path is left, the run reports a
+diagnostic instead of failing. `dictionaries` takes plain files only.
+
 ```yaml
 # config/packages/cache.yaml
 framework:

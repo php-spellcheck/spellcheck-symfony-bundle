@@ -8,6 +8,7 @@ use PHPSpellcheck\Core\Checker\RunStatisticsCollector;
 use PHPSpellcheck\Core\Diagnostics\DiagnosticCollector;
 use PHPSpellcheck\Core\Php\IdentifierKind;
 use PHPSpellcheck\Core\Source\PhpFileSource;
+use PHPSpellcheck\SpellcheckBundle\Path\PathExpander;
 
 /**
  * Builds PhpFileSource from the flat configuration parameters, converting the
@@ -16,11 +17,12 @@ use PHPSpellcheck\Core\Source\PhpFileSource;
 final class PhpSourceFactory
 {
     /**
-     * @param list<string> $paths
+     * @param list<string> $paths   directories, files, or glob patterns
      * @param list<string> $exclude
      * @param list<string> $kinds
      */
     public function __construct(
+        private readonly PathExpander $pathExpander,
         private readonly array $paths,
         private readonly array $exclude,
         private readonly array $kinds,
@@ -40,7 +42,7 @@ final class PhpSourceFactory
     public function create(?array $paths = null, array $kinds = []): PhpFileSource
     {
         return new PhpFileSource(
-            $this->absolute($paths ?? $this->paths),
+            $this->pathExpander->expand($this->absolute($paths ?? $this->paths)),
             $this->exclude,
             IdentifierKind::fromNames([] !== $kinds ? $kinds : $this->kinds),
             $this->language,

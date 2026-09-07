@@ -53,12 +53,53 @@ final class TranslationFilesSourceTest extends TestCase
         self::assertSame(['it', 'en'], array_keys($locales));
     }
 
+    public function testDirectoryGlobPatternIsExpanded(): void
+    {
+        $domains = [];
+
+        foreach ($this->fragments(['paths' => ['%kernel.project_dir%/modules/*/translations']]) as $fragment) {
+            $domains[$fragment->context->get('domain') ?? ''] = true;
+        }
+
+        self::assertSame(['blog', 'shop'], array_keys($domains));
+    }
+
+    public function testRecursiveGlobPatternMatchesFilesAtAnyDepth(): void
+    {
+        $paths = [];
+
+        foreach ($this->fragments(['paths' => ['%kernel.project_dir%/modules/**/*.yaml']]) as $fragment) {
+            $paths[basename((string) $fragment->location?->path)] = true;
+        }
+
+        self::assertSame(['blog.it.yaml', 'shop.it.yaml'], array_keys($paths));
+    }
+
+    public function testAFileAlreadyCoveredByADirectoryIsNotReadTwice(): void
+    {
+        $fragments = $this->fragments([
+            'paths' => [
+                '%kernel.project_dir%/modules/blog/translations',
+                '%kernel.project_dir%/modules/**/*.yaml',
+            ],
+        ]);
+
+        $titles = array_filter(
+            $fragments,
+            static fn ($fragment): bool => 'post.title' === $fragment->context->get('key'),
+        );
+
+        self::assertCount(1, $titles);
+    }
+
     /**
+     * @param array<string, mixed> $translations
+     *
      * @return list<TextFragment>
      */
-    private function fragments(): array
+    private function fragments(array $translations = []): array
     {
-        $kernel = new TestKernel();
+        $kernel = new TestKernel('test', true, [] === $translations ? [] : ['translations' => $translations]);
         $kernel->boot();
 
         /** @var TranslationFilesSource $source */

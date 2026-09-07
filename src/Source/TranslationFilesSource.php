@@ -13,6 +13,7 @@ use PHPSpellcheck\Core\Model\TextFragment;
 use PHPSpellcheck\Core\Model\TokenizerMode;
 use PHPSpellcheck\Core\Source\SourceInterface;
 use PHPSpellcheck\SpellcheckBundle\Locale\LocaleResolver;
+use PHPSpellcheck\SpellcheckBundle\Path\PathExpander;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Translation\Loader\LoaderInterface;
@@ -40,11 +41,12 @@ final class TranslationFilesSource implements SourceInterface
     private DomainFilter $domainFilter;
 
     /**
-     * @param list<string> $paths
+     * @param list<string> $paths directories, files, or glob patterns
      */
     public function __construct(
         private readonly ContainerInterface $loaders,
         private readonly array $paths,
+        private readonly PathExpander $pathExpander,
         DomainFilter $domainFilter,
         private readonly LocaleResolver $localeResolver,
         private readonly TranslationFileLocator $locator,
@@ -75,20 +77,48 @@ final class TranslationFilesSource implements SourceInterface
 
     public function fragments(): iterable
     {
-        $directories = array_values(array_filter($this->paths, 'is_dir'));
+        $resolved = $this->pathExpander->expand($this->paths);
+        $directories = array_values(array_filter($resolved, 'is_dir'));
+        $files = array_values(array_filter($resolved, 'is_file'));
 
-        if ([] === $directories) {
+        if ([] === $directories && [] === $files) {
             $this->diagnostics->add(
                 DiagnosticCode::SKIPPED_FILE,
-                \sprintf('None of the configured translation paths exists: %s.', implode(', ', $this->paths)),
+                \sprintf('None of the configured translation paths matches anything: %s.', implode(', ', $this->paths)),
             );
 
             return;
         }
 
+        // A file already covered by one of the directories would be read twice.
+        $files = array_values(array_filter(
+            $files,
+            static function (string $file) use ($directories): bool {
+                foreach ($directories as $directory) {
+                    if (str_starts_with($file, rtrim($directory, \DIRECTORY_SEPARATOR).\DIRECTORY_SEPARATOR)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+        ));
+
         $allowedLocales = $this->localeResolver->resolve($this->onlyLocales);
 
-        foreach ((new Finder())->files()->in($directories)->sortByName() as $file) {
+        $finder = (new Finder())->files()->sortByName();
+
+        if ([] !== $directories) {
+            $finder->in($directories);
+        }
+
+        // Files come from a pattern such as "src/**/*.yaml": Finder::in()
+        // only takes directories.
+        if ([] !== $files) {
+            $finder->append($files);
+        }
+
+        foreach ($finder as $file) {
             $basename = $file->getFilename();
 
             if (1 !== preg_match(self::FILENAME, $basename, $matches)) {

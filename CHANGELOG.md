@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `RegisterTranslationLoadersPass`: builds the loader locator by reading the
   `translation.loader` tag aliases by hand, since `#[AsTaggedItem]` is 6.1+.
 - Autoconfiguration for the six extension points.
+- Glob patterns in `translations.paths` and `code.paths`, resolved by
+  `PathExpander` with the Finder syntax (`*` stops at the separator, `**` does
+  not), matched at run time so a new directory needs no cache clear.
 
 ### Notes
 

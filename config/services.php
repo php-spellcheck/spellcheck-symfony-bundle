@@ -60,6 +60,8 @@ use PHPSpellcheck\SpellcheckBundle\Command\SpellcheckDoctorCommand;
 use PHPSpellcheck\SpellcheckBundle\Command\SpellcheckTranslationsCommand;
 use PHPSpellcheck\SpellcheckBundle\Factory\CachingSpellerFactory;
 use PHPSpellcheck\SpellcheckBundle\Factory\PhpSourceFactory;
+use PHPSpellcheck\SpellcheckBundle\Factory\TranslationFileLocatorFactory;
+use PHPSpellcheck\SpellcheckBundle\Path\PathExpander;
 use PHPSpellcheck\SpellcheckBundle\Source\DomainFilter;
 use PHPSpellcheck\SpellcheckBundle\Source\TranslationFilesSource;
 use PHPSpellcheck\SpellcheckBundle\Source\TranslatorCatalogueSource;
@@ -82,6 +84,8 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('php_spellcheck.diagnostics', DiagnosticCollector::class);
     $services->set('php_spellcheck.statistics', RunStatisticsCollector::class);
+
+    $services->set('php_spellcheck.path_expander', PathExpander::class);
 
     // --------------------------------------------------------- dictionaries
 
@@ -238,7 +242,11 @@ return static function (ContainerConfigurator $container): void {
     $services->set('php_spellcheck.locator.php_array', PhpArrayKeyLocator::class)
         ->tag('php_spellcheck.key_locator');
 
+    $services->set('php_spellcheck.translation_file_locator_factory', TranslationFileLocatorFactory::class)
+        ->args([service('php_spellcheck.path_expander')]);
+
     $services->set('php_spellcheck.translation_file_locator', TranslationFileLocator::class)
+        ->factory([service('php_spellcheck.translation_file_locator_factory'), 'create'])
         ->args([
             param('php_spellcheck.translations.paths'),
             tagged_iterator('php_spellcheck.key_locator'),
@@ -318,6 +326,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             abstract_arg('translation loaders locator, set by RegisterTranslationLoadersPass'),
             param('php_spellcheck.translations.paths'),
+            service('php_spellcheck.path_expander'),
             service('php_spellcheck.domain_filter'),
             service('php_spellcheck.locale_resolver'),
             service('php_spellcheck.translation_file_locator'),
@@ -328,6 +337,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('php_spellcheck.source.php_factory', PhpSourceFactory::class)
         ->args([
+            service('php_spellcheck.path_expander'),
             param('php_spellcheck.code.paths'),
             param('php_spellcheck.code.exclude'),
             param('php_spellcheck.code.check'),
