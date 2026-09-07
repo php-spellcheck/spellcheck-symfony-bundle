@@ -1,14 +1,9 @@
 {
     "name": "php-spellcheck/spellcheck-symfony-bundle",
-    "description": "Symfony integration for php-spellcheck/spellcheck-core: spell checks translation catalogues and PHP code",
+    "description": "Spell check Symfony translations and PHP code in CI. Hunspell/Aspell backends, ICU aware, baseline for legacy projects.",
     "type": "symfony-bundle",
     "keywords": [
-        "symfony",
-        "bundle",
-        "spellcheck",
-        "spelling",
-        "translations",
-        "hunspell"
+        "symfony", "symfony-bundle", "spell-checker", "spellcheck", "spelling", "php", "hunspell", "aspell", "translations", "i18n", "l10n", "code-quality", "static-analysis", "linter", "typo", "icu", "continuous-integration", "developer-tools"
     ],
     "license": "MIT",
     "authors": [

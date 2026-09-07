@@ -96,7 +96,7 @@ final class LocaleResolver
 
         $this->diagnostics->add(
             DiagnosticCode::MISSING_LOCALES,
-            sprintf(
+            \sprintf(
                 'Locales were inferred from the translator (%s). Configure framework.enabled_locales or '
                 .'acme_spellcheck.translations.locales for reproducible runs.',
                 implode(', ', $locales),

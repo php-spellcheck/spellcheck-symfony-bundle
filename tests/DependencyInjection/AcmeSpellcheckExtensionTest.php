@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PHPSpellcheck\SpellcheckBundle\Tests\DependencyInjection;
 
-use PHPSpellcheck\SpellcheckBundle\DependencyInjection\AcmeSpellcheckExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use PHPSpellcheck\SpellcheckBundle\DependencyInjection\AcmeSpellcheckExtension;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class AcmeSpellcheckExtensionTest extends AbstractExtensionTestCase

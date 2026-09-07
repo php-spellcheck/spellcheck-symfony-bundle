@@ -3,11 +3,7 @@
 declare(strict_types=1);
 
 $finder = (new PhpCsFixer\Finder())
-    ->in([__DIR__.'/packages/spellcheck/src', __DIR__.'/packages/spellcheck/tests'])
-    ->in([__DIR__.'/packages/spellcheck-bundle/src', __DIR__.'/packages/spellcheck-bundle/tests'])
-    ->append([__DIR__.'/packages/spellcheck-bundle/config/services.php'])
-    // Deliberately broken fixture.
-    ->notPath('Fixtures/php/BrokenSyntax.php.txt')
+    ->in([__DIR__.'/src', __DIR__.'/tests'])
 ;
 
 return (new PhpCsFixer\Config())

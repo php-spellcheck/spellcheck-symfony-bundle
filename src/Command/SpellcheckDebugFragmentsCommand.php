@@ -59,7 +59,7 @@ final class SpellcheckDebugFragmentsCommand extends Command
         $source = 'php' === $name ? $this->code : $this->translations;
 
         if (null === $source) {
-            $io->error(sprintf('The "%s" source is not available.', $name));
+            $io->error(\sprintf('The "%s" source is not available.', $name));
 
             return ExitCodeCalculator::ENVIRONMENT_ERROR;
         }
@@ -79,7 +79,7 @@ final class SpellcheckDebugFragmentsCommand extends Command
                 $tokens = [];
 
                 foreach ($this->tokenizers->tokenize($processed) as $word) {
-                    $tokens[] = sprintf('%s@%d', $word->value, $word->offset);
+                    $tokens[] = \sprintf('%s@%d', $word->value, $word->offset);
                 }
 
                 $io->definitionList(
@@ -93,14 +93,14 @@ final class SpellcheckDebugFragmentsCommand extends Command
                 );
 
                 if (++$printed >= $limit) {
-                    $io->comment(sprintf('Stopped after %d fragments; raise --limit to see more.', $limit));
+                    $io->comment(\sprintf('Stopped after %d fragments; raise --limit to see more.', $limit));
 
                     return ExitCodeCalculator::SUCCESS;
                 }
             }
         }
 
-        $io->comment(sprintf('%d fragment(s) printed.', $printed));
+        $io->comment(\sprintf('%d fragment(s) printed.', $printed));
 
         return ExitCodeCalculator::SUCCESS;
     }

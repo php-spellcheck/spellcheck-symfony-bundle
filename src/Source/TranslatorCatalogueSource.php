@@ -100,7 +100,7 @@ final class TranslatorCatalogueSource implements SourceInterface
         } catch (\Throwable $e) {
             $this->diagnostics->add(
                 DiagnosticCode::SKIPPED_FILE,
-                sprintf('Unable to load the catalogue for locale "%s": %s', $locale, $e->getMessage()),
+                \sprintf('Unable to load the catalogue for locale "%s": %s', $locale, $e->getMessage()),
             );
 
             return null;
@@ -117,7 +117,7 @@ final class TranslatorCatalogueSource implements SourceInterface
         if ([] === $domains) {
             $this->diagnostics->add(
                 DiagnosticCode::SKIPPED_FILE,
-                sprintf('The catalogue for locale "%s" contains no message.', $locale),
+                \sprintf('The catalogue for locale "%s" contains no message.', $locale),
             );
 
             return;

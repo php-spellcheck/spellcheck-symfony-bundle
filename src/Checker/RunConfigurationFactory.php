@@ -18,8 +18,8 @@ final class RunConfigurationFactory
     private bool $languagesDetected = false;
 
     /**
-     * @param list<string>                 $excludedLanguages
-     * @param array<string, array<mixed>>  $profiles
+     * @param list<string>                $excludedLanguages
+     * @param array<string, array<mixed>> $profiles
      */
     public function __construct(
         private readonly LocaleDictionaryMap $localeMap,
@@ -95,11 +95,7 @@ final class RunConfigurationFactory
         }
 
         if (!isset($this->profiles[$name])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Unknown profile "%s". Available profiles: %s.',
-                $name,
-                [] === $this->profiles ? '(none)' : implode(', ', array_keys($this->profiles)),
-            ));
+            throw new \InvalidArgumentException(\sprintf('Unknown profile "%s". Available profiles: %s.', $name, [] === $this->profiles ? '(none)' : implode(', ', array_keys($this->profiles))));
         }
 
         /** @var array<string, mixed> $options */

@@ -21,7 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class SpellcheckDictionaryAddCommand extends Command
 {
     private const HEADER = "# Project dictionary. One word per line; lines starting with # are ignored.\n"
-        ."# Managed by \"bin/console spellcheck:dictionary:add\".";
+        .'# Managed by "bin/console spellcheck:dictionary:add".';
 
     /**
      * @param list<string> $configuredDictionaries
@@ -70,7 +70,7 @@ final class SpellcheckDictionaryAddCommand extends Command
 
         $after = \count($this->loader->parse((string) file_get_contents($path)));
 
-        $io->success(sprintf('%d word(s) added to %s (%d -> %d).', $after - $before, $path, $before, $after));
+        $io->success(\sprintf('%d word(s) added to %s (%d -> %d).', $after - $before, $path, $before, $after));
 
         return ExitCodeCalculator::SUCCESS;
     }

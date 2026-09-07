@@ -30,9 +30,6 @@ cs: ## Check the coding standard
 cs-fix: ## Fix the coding standard
 	$(DOCKER) vendor/bin/php-cs-fixer fix
 
-smoke: ## Dependency free sanity check of the engine
-	$(DOCKER) $(PHP) packages/spellcheck/tests/smoke.php
-
 validate: ## Validate every composer.json
 	$(DOCKER) composer validate --strict
 	$(DOCKER) composer validate --strict --working-dir=packages/spellcheck

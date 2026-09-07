@@ -29,11 +29,9 @@ final class AcmeSpellcheckExtension extends Extension
         MisspellingFilterInterface::class => 'acme_spellcheck.filter',
     ];
 
-    public function getAlias(): string
-    {
-        return 'acme_spellcheck';
-    }
-
+    /**
+     * @param array<array-key, mixed> $config
+     */
     public function getConfiguration(array $config, ContainerBuilder $container): Configuration
     {
         return new Configuration();

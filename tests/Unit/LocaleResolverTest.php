@@ -69,7 +69,7 @@ final class LocaleResolverTest extends TestCase
 
     private function bag(): TranslatorBagInterface
     {
-        return new class() implements TranslatorBagInterface {
+        return new class implements TranslatorBagInterface {
             public function getCatalogue(?string $locale = null): MessageCatalogueInterface
             {
                 return new MessageCatalogue($locale ?? 'en');

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PHPSpellcheck\SpellcheckBundle\Tests\DependencyInjection;
 
-use PHPSpellcheck\SpellcheckBundle\DependencyInjection\Configuration;
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
+use PHPSpellcheck\SpellcheckBundle\DependencyInjection\Configuration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 

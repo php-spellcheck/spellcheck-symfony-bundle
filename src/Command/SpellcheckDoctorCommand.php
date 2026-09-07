@@ -57,7 +57,7 @@ final class SpellcheckDoctorCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $io->title(sprintf('Spellcheck environment (php-spellcheck/spellcheck-core %s)', Version::string()));
+        $io->title(\sprintf('Spellcheck environment (php-spellcheck/spellcheck-core %s)', Version::string()));
 
         $warnings = 0;
         $errors = 0;
@@ -74,7 +74,7 @@ final class SpellcheckDoctorCommand extends Command
 
         if (!$inner->isAvailable()) {
             ++$errors;
-            $io->error(sprintf(
+            $io->error(\sprintf(
                 "The selected backend is not usable.\n%s",
                 self::INSTALL_HINTS[$inner->getName()] ?? 'Configure acme_spellcheck.backend: wordlist to run without binaries.',
             ));
@@ -131,11 +131,11 @@ final class SpellcheckDoctorCommand extends Command
         $io->section('Baseline');
 
         if (!$this->baselineStorage->exists($this->baselinePath)) {
-            $io->text(sprintf('No baseline at %s. Create one with "spellcheck:baseline".', $this->baselinePath));
+            $io->text(\sprintf('No baseline at %s. Create one with "spellcheck:baseline".', $this->baselinePath));
         } else {
             try {
                 $baseline = $this->baselineStorage->load($this->baselinePath);
-                $io->text(sprintf('%s (%d entries)', $this->baselinePath, $baseline->count()));
+                $io->text(\sprintf('%s (%d entries)', $this->baselinePath, $baseline->count()));
             } catch (BaselineSchemaException $e) {
                 ++$errors;
                 $io->error($e->getMessage());
@@ -146,13 +146,13 @@ final class SpellcheckDoctorCommand extends Command
         $io->text(implode(', ', $this->reporters->getNames()));
 
         if ($errors > 0) {
-            $io->error(sprintf('%d problem(s) must be fixed before the tool can run.', $errors));
+            $io->error(\sprintf('%d problem(s) must be fixed before the tool can run.', $errors));
 
             return ExitCodeCalculator::ENVIRONMENT_ERROR;
         }
 
         if ($warnings > 0) {
-            $io->warning(sprintf('Environment usable with %d warning(s).', $warnings));
+            $io->warning(\sprintf('Environment usable with %d warning(s).', $warnings));
 
             return ExitCodeCalculator::WARNINGS_ONLY;
         }

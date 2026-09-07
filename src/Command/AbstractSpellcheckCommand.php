@@ -130,7 +130,6 @@ abstract class AbstractSpellcheckCommand extends Command
             return [];
         }
 
-        /** @var mixed $value */
         $value = $input->getOption($name);
 
         if (!\is_array($value)) {

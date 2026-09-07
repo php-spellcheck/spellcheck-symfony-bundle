@@ -15,8 +15,8 @@ use PHPSpellcheck\Core\Source\SourceInterface;
 use PHPSpellcheck\SpellcheckBundle\Locale\LocaleResolver;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Translation\Loader\LoaderInterface;
+use Symfony\Component\Translation\MessageCatalogueInterface;
 
 /**
  * Reads the translation files of the project directly.
@@ -80,7 +80,7 @@ final class TranslationFilesSource implements SourceInterface
         if ([] === $directories) {
             $this->diagnostics->add(
                 DiagnosticCode::SKIPPED_FILE,
-                sprintf('None of the configured translation paths exists: %s.', implode(', ', $this->paths)),
+                \sprintf('None of the configured translation paths exists: %s.', implode(', ', $this->paths)),
             );
 
             return;
@@ -94,7 +94,7 @@ final class TranslationFilesSource implements SourceInterface
             if (1 !== preg_match(self::FILENAME, $basename, $matches)) {
                 $this->diagnostics->add(
                     DiagnosticCode::UNPARSABLE_FILENAME,
-                    sprintf('Skipping "%s": the name does not follow <domain>.<locale>.<format>.', $basename),
+                    \sprintf('Skipping "%s": the name does not follow <domain>.<locale>.<format>.', $basename),
                 );
 
                 continue;
@@ -132,7 +132,7 @@ final class TranslationFilesSource implements SourceInterface
         if (!$this->loaders->has($format)) {
             $this->diagnostics->add(
                 DiagnosticCode::SKIPPED_FILE,
-                sprintf('No translation loader is registered for the "%s" format.', $format),
+                \sprintf('No translation loader is registered for the "%s" format.', $format),
                 Location::file($path),
             );
 
@@ -147,7 +147,7 @@ final class TranslationFilesSource implements SourceInterface
         } catch (\Throwable $e) {
             $this->diagnostics->add(
                 DiagnosticCode::SKIPPED_FILE,
-                sprintf('Unable to load "%s": %s', $path, $e->getMessage()),
+                \sprintf('Unable to load "%s": %s', $path, $e->getMessage()),
                 Location::file($path),
             );
 

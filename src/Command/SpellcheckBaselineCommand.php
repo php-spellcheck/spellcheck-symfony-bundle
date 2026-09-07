@@ -106,7 +106,7 @@ final class SpellcheckBaselineCommand extends AbstractSpellcheckCommand
         $before = \count($existing->entries());
         $after = \count($updated->entries());
 
-        $io->writeln(sprintf(
+        $io->writeln(\sprintf(
             '<info>%s</info> %d entries before, %d after (%+d).',
             $dryRun ? 'Would write' : 'Wrote',
             $before,
@@ -124,7 +124,7 @@ final class SpellcheckBaselineCommand extends AbstractSpellcheckCommand
 
         $storage->save($path, $updated);
 
-        $io->success(sprintf('Baseline written to %s', $path));
+        $io->success(\sprintf('Baseline written to %s', $path));
 
         return ExitCodeCalculator::SUCCESS;
     }
