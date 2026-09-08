@@ -66,7 +66,7 @@ jobs:
               if: matrix.parser
               run: composer require --no-update --no-interaction nikic/php-parser:${{ matrix.parser }}
 
-            - uses: ramsey/composer-install@v3
+            - uses: ramsey/composer-install@v4
               with:
                   dependency-versions: ${{ matrix.deps }}
 
@@ -89,7 +89,7 @@ jobs:
                   coverage: none
                   ini-values: memory_limit=-1
 
-            - uses: ramsey/composer-install@v3
+            - uses: ramsey/composer-install@v4
 
             - run: vendor/bin/phpstan analyse --error-format=github --no-progress
 
