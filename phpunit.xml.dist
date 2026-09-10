@@ -5,7 +5,7 @@
          colors="true"
          failOnRisky="true"
          failOnWarning="true"
-         cacheResultFile=".phpunit.cache/test-results">
+         cacheDirectory=".phpunit.cache">
     <php>
         <!-- No Symfony deprecation may be triggered by this bundle. -->
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=0"/>
@@ -18,9 +18,9 @@
             <exclude>tests/Fixtures</exclude>
         </testsuite>
     </testsuites>
-    <coverage>
+    <source>
         <include>
             <directory suffix=".php">src</directory>
         </include>
-    </coverage>
+    </source>
 </phpunit>

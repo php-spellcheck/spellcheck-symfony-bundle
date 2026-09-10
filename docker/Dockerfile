@@ -19,7 +19,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         hunspell-en-gb \
         hunspell-de-de \
         hunspell-fr \
-    && docker-php-ext-install -j"$(nproc)" mbstring pspell \
+    && docker-php-ext-install -j"$(nproc)" mbstring \
+    # pspell left php-src in 8.4 and is only on PECL since then.
+    && if [ -d /usr/src/php/ext/pspell ]; then \
+           docker-php-ext-install -j"$(nproc)" pspell; \
+       else \
+           pecl install pspell && docker-php-ext-enable pspell; \
+       fi \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer

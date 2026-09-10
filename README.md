@@ -1,8 +1,8 @@
 # PHPSpellcheckBundle — spell check Symfony translations and PHP code
 
 [![CI](https://github.com/php-spellcheck/spellcheck-symfony-bundle/actions/workflows/ci.yaml/badge.svg)](https://github.com/php-spellcheck/spellcheck-symfony-bundle/actions/workflows/ci.yaml)
-[![PHP](https://img.shields.io/badge/php-%3E%3D8.1-777bb4?logo=php&logoColor=white)](https://www.php.net/supported-versions.php)
-[![Symfony](https://img.shields.io/badge/symfony-5.4%20%7C%206.4%20%7C%207.x-000000?logo=symfony&logoColor=white)](https://symfony.com/releases)
+[![PHP](https://img.shields.io/badge/php-8.1%20%7C%208.2%20%7C%208.3%20%7C%208.4%20%7C%208.5-777bb4?logo=php&logoColor=white)](https://www.php.net/supported-versions.php)
+[![Symfony](https://img.shields.io/badge/symfony-5.4%20%7C%206.4%20%7C%207.x%20%7C%208.x-000000?logo=symfony&logoColor=white)](https://symfony.com/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 A Symfony bundle that spell checks **every translation catalogue with the
@@ -14,7 +14,8 @@ It is the Symfony integration of
 [`php-spellcheck/spellcheck-core`](https://github.com/php-spellcheck/spellcheck-core),
 the framework-agnostic engine.
 
-- Symfony 5.4 LTS, 6.4 LTS, 7.x, 8.x (it's upcoming) — PHP ≥ 8.1
+- Symfony 5.4 LTS, 6.4 LTS, 7.x and 8.x — PHP 8.1 up to 8.5 (Symfony 8.x
+  itself needs PHP ≥ 8.4)
 - Backends: **hunspell**, **aspell**, **ext-pspell**, or the pure PHP
   `wordlist` backend, which needs no system binary
 - **ICU aware**: plural and select messages are expanded, only the textual

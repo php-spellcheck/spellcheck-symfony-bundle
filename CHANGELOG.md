@@ -26,6 +26,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `PathExpander` with the Finder syntax (`*` stops at the separator, `**` does
   not), matched at run time so a new directory needs no cache clear.
 
+### Changed
+
+- Symfony 8.x and PHP 8.5 are supported and covered by CI. The Symfony
+  constraints accept `^8.0`; Symfony 8 itself requires PHP >= 8.4.
+- The test suite runs on PHPUnit 10.5, 11.5 or 12; the development dependencies
+  `matthiasnoback/symfony-config-test` and
+  `matthiasnoback/symfony-dependency-injection-test` moved to `^6.2`, the first
+  series that supports Symfony 8. PHPUnit 13 is excluded: its
+  `ExceptionMessageIsOrContains` constraint takes a string instead of an
+  exception, which breaks `assertConfigurationIsInvalid()` with a message.
+- The development image installs `ext-pspell` from PECL on PHP >= 8.4, where the
+  extension is no longer part of php-src.
+
 ### Notes
 
 - No service in this bundle uses autowiring: every dependency is declared

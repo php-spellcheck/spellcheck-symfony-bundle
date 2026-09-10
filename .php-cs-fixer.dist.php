@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 $finder = (new PhpCsFixer\Finder())
     ->in([__DIR__.'/src', __DIR__.'/tests'])
+    // Compiled test container, caches and logs: generated, never committed.
+    ->exclude('Fixtures/var')
 ;
 
 return (new PhpCsFixer\Config())

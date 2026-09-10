@@ -25,6 +25,9 @@ jobs:
                     - { php: '8.2', symfony: '6.4.*', deps: highest }
                     - { php: '8.3', symfony: '7.4.*', deps: highest }
                     - { php: '8.4', symfony: '7.4.*', deps: highest }
+                    - { php: '8.4', symfony: '8.0.*', deps: highest }
+                    - { php: '8.5', symfony: '7.4.*', deps: highest }
+                    - { php: '8.5', symfony: '8.1.*', deps: highest }
                     # Dedicated job for php-parser 4: without it a regression on
                     # the compatibility shim goes unnoticed.
                     - { php: '8.3', symfony: '6.4.*', deps: highest, parser: '^4.18' }

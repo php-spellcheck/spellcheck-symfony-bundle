@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PHPSpellcheck\SpellcheckBundle\Tests\Fixtures;
 
 use PHPSpellcheck\SpellcheckBundle\PHPSpellcheckBundle;
+use Psr\Log\NullLogger;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -88,6 +89,11 @@ final class TestKernel extends Kernel
         ], $this->spellcheckConfig));
 
         $container->services()
+            // Without Monolog, FrameworkBundle falls back to the HttpKernel
+            // logger. A debug kernel makes Kernel::boot() set SHELL_VERBOSITY=3,
+            // which lowers that logger to the debug level and prints every
+            // record on stderr, polluting the test output.
+            ->set('logger', NullLogger::class)
             ->alias('test.php_spellcheck.runner', 'php_spellcheck.runner')->public()
         ;
 
