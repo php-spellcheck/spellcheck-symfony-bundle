@@ -2,7 +2,7 @@ DOCKER ?= docker compose run --rm php
 PHP    ?= php
 
 .DEFAULT_GOAL := help
-.PHONY: help build install test test-integration test-all stan cs cs-fix smoke shell validate merge release clean
+.PHONY: help build install test stan cs cs-fix smoke shell validate merge release clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'

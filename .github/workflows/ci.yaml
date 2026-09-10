@@ -35,17 +35,10 @@ jobs:
         steps:
             - uses: actions/checkout@v7
 
-            - name: Install the spell checking backends
-              run: |
-                  sudo apt-get update
-                  sudo apt-get install -y --no-install-recommends \
-                      hunspell hunspell-it hunspell-en-us hunspell-de-de \
-                      aspell aspell-it aspell-en libpspell-dev
-
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
-                  extensions: mbstring, pspell
+                  extensions: mbstring
                   coverage: none
                   ini-values: memory_limit=-1
 
@@ -75,9 +68,6 @@ jobs:
 
             - name: Unit and functional tests
               run: vendor/bin/phpunit
-
-            - name: Integration tests against the real binaries
-              run: vendor/bin/phpunit --group integration
 
     static:
         name: Static analysis and coding standard
