@@ -14,7 +14,7 @@ It is the Symfony integration of
 [`php-spellcheck/spellcheck-core`](https://github.com/php-spellcheck/spellcheck-core),
 the framework-agnostic engine.
 
-- Symfony **5.4 LTS**, 6.4, 7.x — PHP ≥ 8.1
+- Symfony 5.4 LTS, 6.4 LTS, 7.x, 8.x (it's upcoming) — PHP ≥ 8.1
 - Backends: **hunspell**, **aspell**, **ext-pspell**, or the pure PHP
   `wordlist` backend, which needs no system binary
 - **ICU aware**: plural and select messages are expanded, only the textual
