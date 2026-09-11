@@ -1,6 +1,8 @@
 # PHPSpellcheckBundle — spell check Symfony translations and PHP code
 
-![PHPSpellcheckBundle — spell check Symfony translations and PHP code in the console, or as a failing build in CI](.github/assets/social-preview.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/php-spellcheck/spellcheck-symfony-bundle/main/.github/assets/social-preview.png?v=2" alt="PHPSpellcheckBundle — spell check Symfony translations and PHP code in the console, or as a failing build in CI" width="880">
+</p>
 
 [![CI](https://github.com/php-spellcheck/spellcheck-symfony-bundle/actions/workflows/ci.yaml/badge.svg)](https://github.com/php-spellcheck/spellcheck-symfony-bundle/actions/workflows/ci.yaml)
 [![PHP](https://img.shields.io/badge/php-8.1%20%7C%208.2%20%7C%208.3%20%7C%208.4%20%7C%208.5-777bb4?logo=php&logoColor=white)](https://www.php.net/supported-versions.php)
